@@ -1,0 +1,51 @@
+alias nv="nvim"
+alias zshrc="nvim ~/.zshrc"
+alias ohmyzsh="thunar ~/.oh-my-zsh"
+alias bashrc="nvim ~/.bashrc"
+alias zshconfig="nvim ~/.zshrc"
+alias ohmyzsh="nvim ~/.oh-my-zsh"
+alias awrc="nvim ~/.config/awesome/rc.lua"
+alias bashrc="nvim ~/.bashrc"
+alias cls="clear"
+alias ls="lsd"
+alias ll='lsd -hAl --group-directories-first'
+alias pac="sudo pacman"
+# alias upgrade="sudo pacman -Syu"
+alias b="light -S"
+alias bx="xrandr --output eDP1  --brightness"
+
+alias shutdown="shutdown now"
+alias restart="reboot"
+#alias sleep="betterlockscreen -l &"
+alias suspend="systemctl suspend"
+#alias hibernate="betterlockscreen -l && sleep 0.5 && systemctl hibernate &"
+#alias logout="pkill -KILL -u davidb"
+alias logout="pkill -KILL awesome"
+
+alias mountd="sudo mount -t ntfs-3g /dev/sda1 ~/Mountpoint/Data"
+alias mountc="sudo mount -t ntfs-3g /dev/sdb5 ~/Mountpoint/C/"
+alias drive="ranger /run/media/davidb"
+alias umount="sudo umount"
+
+alias gc="git clone"
+alias ga="git add --all"
+alias gp="git push"
+alias gs="git status"
+alias ghc="gh repo create"
+alias ns="npm start"
+
+alias dm="dmenu_run"
+alias tkw="tmux kill-window"
+alias tks="tmux kill-session"
+
+alias ovpn="sudo openvpn"
+
+alias w="nitrogen --set-zoom-fill --random ~/Media/Wallpapers"
+
+alias rcsyn="rclone sync -P pcloud: ~/RClone"
+alias resync="rclone bisync ~/RClone pcloud: --resync -v"
+alias bisync="rclone bisync ~/RClone pcloud: -v"
+
+alias top="btop --utf-force"
+alias tmux="tmux -u"
+alias tsm="transmission-remote"

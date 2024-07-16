@@ -1,0 +1,22 @@
+- name: ensure fonts directory
+  file:
+    path: "{{ansible_user_dir}}/.fonts"
+    state: directory
+
+- name: Get Archived files names
+  find:
+    path: "{{ansible_env.PWD}}/files/fonts/"
+    file_type: file
+  register: font_archives
+
+- name: Download Hack
+  unarchive:
+    src: "{{item.path}}"
+    dest: "{{ ansible_user_dir }}/.fonts/"
+    remote_src: yes
+  loop: "{{font_archives.files}}"
+
+- name: Refresh font cache
+  shell: |
+    fc-cache
+  environment: /bin/bash

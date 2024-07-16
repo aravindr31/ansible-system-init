@@ -1,0 +1,23 @@
+general_packages:
+- lsd
+- zsh
+- git
+- ansible
+- nginx
+- htop
+- btop
+- vim
+- neovim
+- docker-compose
+
+debain_packages:
+- kitty
+- alacritty
+
+redhat_packages:
+- kitty
+- alacritty
+
+arch_packages:
+- kitty
+- alacritty

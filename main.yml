@@ -1,0 +1,75 @@
+- name: "System Config"
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - vars/main.yml
+  - vars/packages.yml
+
+  handlers:
+  - include: handlers/source_handler.yml
+
+
+  pre_tasks:
+  - include_tasks:
+      file: "{{item}}"
+    loop:
+    - pre_tasks/ensure_folders.yml # checks and create nessecary folders before main task run
+    - pre_tasks/whoami.yml # check for current user if default user is empty or not defined
+    - pre_tasks/wsl_checks.yml # checks if the is running wsl or not
+    - pre_tasks/files_from_template.yml # create files from templates
+    - font_checks.yml #checks and imports custom fonts
+
+  # roles from ansible-galaxy
+  roles:
+  - role: geerlingguy.docker
+  - role: gantsign.visual-studio-code
+    users:
+    - username: "{{ default_user }}"
+      visual_studio_code_extensions: "{{ vscode_extentions_list }}"
+      visual_studio_code_settings_overwrite: "{{ overwrite_settings }}"
+      visual_studio_code_settings: "{{ vscode_settings }}"
+      visual_studio_code_keybindings_overwrite: "{{ overwrite_keybindngs }}"
+      visual_studio_code_keybindings: "{{vscode_keybindings}}"
+
+  tasks:
+  - name: source new config file
+    shell: |
+      source {{ansible_user_dir}}/.zshrc
+    args:
+      executable: /bin/zsh
+
+  notify:
+  - "source handler"
+  - name: package_install
+    import_tasks: tasks/package_install.yml
+    ignore_errors: true
+
+  - name: pull config repo
+    git:
+      repo: "{{ dotfile_git_repo }}"
+      dest: "{{ home_folder }}/Repos"
+      recursive: false
+      version: master
+
+  - name: Set roles
+    set_fact:
+      run_roles: "{{ default_roles | difference(exclude_roles | default([])) }}"
+    tags:
+    - always
+
+  - name: Display roles
+    ansible.builtin.debug:
+      var: run_roles
+    tags:
+    - always
+
+  - name: Apply Roles
+    include_role:
+      name: "{{item}}"
+      apply:
+        tags:
+        - "{{item}}"
+    with_items: "{{run_roles}}"
+    tags:
+    - always

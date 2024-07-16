@@ -1,0 +1,17 @@
+- name: check for required folders
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0744'
+    owner: 'aravind'
+    group: 'aravind'
+  loop:
+  - "{{home_folder}}/Repos"
+  - "{{home_folder}}/Mount"
+  - "{{home_folder}}/System"
+  - "{{home_folder}}/Media"
+  - "{{ansible_env.PWD}}/tmp"
+  - "{{ansible_user_dir}}/.config"
+  - "{{ansible_user_dir}}/.config/shell_configs"
+  - "{{ansible_user_dir}}/.config/alacritty"
+  - "{{ansible_user_dir}}/.ssh"

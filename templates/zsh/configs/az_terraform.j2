@@ -1,0 +1,8 @@
+#!/bin/bash
+
+connect-azure-terraform() {
+    export ARM_CLIENT_ID="{{ azure_keys.ARM_CLIENT_ID }}"
+    export ARM_CLIENT_SECRET="{{ azure_keys.ARM_CLIENT_SECRET }}"
+    export ARM_SUBSCRIPTION_ID="{{ azure_keys.ARM_SUBSCRIPTION_ID }}"
+    export ARM_TENANT_ID="{{ azure_keys.ARM_TENANT_ID }}"
+}

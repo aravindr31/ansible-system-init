@@ -1,0 +1,24 @@
+- name: NVM | Get NVM insall script
+  uri:
+    url: "{{ nvm_install_script_url }}"
+    method: GET
+    follow_redirects: safe
+    body_format: raw
+    return_content: true
+  register: nvm_install
+
+- name: NVM | Save install.sh
+  copy:
+    content: "{{nvm_install.content }}"
+    dest: "{{playbook_dir}}/tmp/nvm_install.sh"
+    mode: '0744'
+
+- name: NVM | Execute Install script
+  shell: |
+    "{{ playbook_dir }}/tmp/nvm_install.sh"
+
+- name: NVM | Remove tmp install file
+  file:
+    path: "{{playbook_dir}}/tmp/nvm_install.sh"
+    state: absent
+  tags: always

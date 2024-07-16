@@ -1,0 +1,51 @@
+- name: ZSH | get ohmyzsh
+  uri:
+    url: "{{ oh_my_zsh_source_url }}"
+    method: GET
+    follow_redirects: safe
+    body_format: raw
+    return_content: true
+  register: zsh_install
+
+- name: ZSH | save install.sh
+  copy:
+    content: "{{ zsh_install.content }}"
+    dest: "{{ansible_env.PWD}}/tmp/zsh_install.sh"
+    mode: '0744'
+
+- name: ZSH | Install oh-my-zsh
+  shell: |
+    "{{ ansible_env.PWD }}/tmp/zsh_install.sh"
+  environment:
+    KEEP_ZSHRC: "{{ keep_current_zsh_config }}"
+    RUNZSH: "{{ run_zsh_shell_after_install }}"
+    CHSH: "{{ change_shell_after_install }}"
+
+- name: ZSH | remove tmp install file
+  file:
+    path: "{{ansible_env.PWD}}/tmp/zsh_install.sh"
+    state: absent
+  tags: always
+
+- name: ZSH | get filenames from config folders
+  find:
+    path: "{{ansible_env.PWD}}/files/zsh/config"
+    file_type: file
+  register: config_files
+
+- name: ZSH | link custom configs to .config/shell_configs
+  file:
+    src: "{{item.path}}"
+    dest: "{{ansible_user_dir}}/.config/shell_configs"
+    mode: "0744"
+    state: link
+  with_items:
+  - "{{config_files.files}}"
+
+- name: ZSH | link custom .zshrc to base loc
+  file:
+    src: "{{ansible_env.PWD}}/files/zsh/.zshrc"
+    dest: "{{ ansible_user_dir }}"
+    mode: '0644'
+    state: link
+  when: dry_run is false

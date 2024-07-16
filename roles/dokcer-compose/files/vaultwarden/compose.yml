@@ -1,0 +1,9 @@
+version: "1.0"
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    ports:
+      - 8090:80
+    volumes:
+      - /vm-data/:/data/

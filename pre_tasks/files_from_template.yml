@@ -1,0 +1,21 @@
+- block:
+  - name: ZSH | check for template files
+    find:
+      path: "{{ansible_env.PWD}}/templates/{{item}}"
+    register: template_files
+
+  - name: Extract relative path from template folder
+    set_fact:
+      root_path_from_template: "{{template_files | map(attribute='path') | map('regex_replace','^{{ansible_env.PWD}}/templates/','') | list }}"
+
+  - name: ZSH | copy template file
+    template:
+      src: "{{ansible_env.PWD}}/templates/{{item}}"
+      dest: "{{ansible_env.PWD}}/files/{{item}}"
+      mode: '0744'
+      owner: '{{default_user}}'
+      group: '{{default_user}}'
+    loop:
+    - "{{root_path_from_template}}"
+  loop:
+  - "{{roles_list}}"

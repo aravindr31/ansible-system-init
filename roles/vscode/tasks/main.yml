@@ -1,0 +1,9 @@
+- name: VSCode | Check for {{ansible_os_family}}.yml
+  stat:
+    path: "{{ role_path }}/tasks/{{ansible_os_family}}.yml"
+  register: file_state
+
+- name: VSCode | Exec {{ansible_os_family}} task file
+  include_tasks: "{{ansible_os_family}}.yml"
+  when: file_state.stat.exists
+

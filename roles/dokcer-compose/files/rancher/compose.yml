@@ -1,0 +1,9 @@
+name: Rancher
+services:
+  rancher:
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - 8010:80
+      - 4430:443
+    image: rancher/rancher

@@ -1,0 +1,13 @@
+- name: Tmux | install Tmux
+  package:
+    name: tmux
+    state: present
+
+- name: Tmux | link config file to home folder
+  file:
+    src: "{{playbook_dir}}/files/tmux/tmux.conf"
+    path: "{{ ansible_user_dir }}/tmux.conf"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    state: link
+  when: dry_run is false

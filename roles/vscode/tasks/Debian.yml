@@ -1,0 +1,24 @@
+- block:
+  - name: VSCode | {{ ansible_distribution }} | Query for official vscode deb file.
+    uri:
+      url: "{{ vscode_source_url_debian }}"
+      method: GET
+      follow_redirects: safe
+      return_content: true
+    register: vscode_deb_file
+
+  - name: VSCode | Save deb file to tmp dir
+    copy:
+      content: "{{vscode_deb_file.content }}"
+      dest: "{{playbook_dir}}/tmp/vscode_deb_file.deb"
+      mode: '0744'
+
+  - name: VSCode | Install Code
+    apt:
+      deb: "{{playbook_dir}}/tmp/vscode_deb_file.deb"
+
+  - name: VSCode | delete deb file
+    file:
+      path: "{{playbook_dir}}/tmp/vscode_deb_file.deb"
+      state: absent
+    tags: always

@@ -1,0 +1,14 @@
+# Global Config
+
+Host *
+  StrictHostKeyChecking=no
+
+# Github, Gitlab
+
+Host github
+  Hostname git@github.com
+   IdentityFile {{ansible_user_dir}}/.ssh/git_admin_key
+
+# Other Servers
+Host *
+  IdentityFile {{ansible_user_dir}}/.ssh/ssh_regular_key

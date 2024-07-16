@@ -1,0 +1,13 @@
+- name: Github Cli | install Github Cli
+  package:
+    name: gh
+    state: present
+
+- name: Github Cli | link config file to home folder
+  file:
+    src: "{{playbook_dir}}/files/gh/hosts.yml"
+    path: "{{ ansible_user_dir }}/gh/hosts.yml"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    state: link
+  when: dry_run is false
