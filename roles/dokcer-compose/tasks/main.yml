@@ -1,7 +1,7 @@
 - block:
   - name: Docker-Compose | provison the containers in spinup list
     community.docker.docker_compose:
-      project_src: "{{ playbook_dir }}/docker-compose/files/{{item}}"
+      project_src: "{{ playbook_dir }}/roles/docker-compose/files/{{item}}"
     register: spin_up_output
     loop: "{{spin_up_list}}"
 
@@ -13,7 +13,7 @@
 - block:
   - name: Docker-Compose | destroy the containers in spin down list
     community.docker.docker_compose:
-      project_src: "{{ playbook_dir }}/docker-compose/files/{{item}}"
+      project_src: "{{ playbook_dir }}/roles/docker-compose/files/{{item}}"
       state: absent
     register: spin_down_output
     loop: "{{spin_down_list}}"
