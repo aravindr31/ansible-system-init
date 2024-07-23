@@ -9,7 +9,6 @@
   handlers:
   - include: handlers/source_handler.yml
 
-
   pre_tasks:
   - include_tasks:
       file: "{{item}}"
@@ -18,7 +17,7 @@
     - pre_tasks/whoami.yml # check for current user if default user is empty or not defined
     - pre_tasks/wsl_checks.yml # checks if the is running wsl or not
     - pre_tasks/files_from_template.yml # create files from templates
-    - font_checks.yml #checks and imports custom fonts
+    - pre_tasks/add_fonts.yml #checks and imports custom fonts
 
   # roles from ansible-galaxy
   roles:

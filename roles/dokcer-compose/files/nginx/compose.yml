@@ -1,0 +1,11 @@
+version: "3" # Add version definition
+services:
+  nginx:
+    image: "aravindr31/nginx-certbot:1.2"
+    container_name: nginx-certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ng_data:/ng_data
+      - ./cert_data:/cert_data

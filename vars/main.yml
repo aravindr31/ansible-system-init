@@ -2,7 +2,7 @@
 default_user: "aravind"
 home_folder: "{{'/home/' + default_user}}"
 dotfile_git_repo: https://github.com/aravindr31/dotfiles.git
-dry_run: true # make it false ito install and configure
+dry_run: true # make it false to install and configure
 
 default_roles:
 # - alacritty
@@ -31,10 +31,10 @@ change_shell_after_install: yes
 
 # Visual Studio Code
 vscode_source_url_debian: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-vscode_extentions_list: [streetsidesoftware.code-spell-checker, wholroyd.jinja, ms-python.python]
+vscode_extentions_list: [ms-vscode-remote.remote-wsl, william-voyek.vscode-nginx, mhutchie.git-graph, redhat.vscode-yaml, esbenp.prettier-vscode, ms-vscode-remote.remote-containers, redhat.ansible, akamud.vscode-theme-onedark, wholroyd.jinja, foxundermoon.shell-format, unifiedjs.vscode-mdx, kennylong.kubernetes-yaml-formatter, mechatroner.rainbow-csv, pkief.material-icon-theme, xadillax.viml, astro-build.astro-vscode, ms-azuretools.vscode-docker, eamodio.gitlens, ms-python.python, ritwickdey.liveserver, ms-python.vscode-pylance, ms-kubernetes-tools.vscode-kubernetes-tools, redhat.java, arcticicestudio.nord-visual-studio-code, ms-azuretools.vscode-azureresourcegroups, ms-vscode.azure-account, ms-azuretools.vscode-azureterraform, 4ops.terraform, hashicorp.terraform]
 overwrite_settings: false
 overwrite_keybindngs: false
-vscode_settings: {"editor.rulers": [80, 100, 120], "editor.renderWhitespace": true, "files.associations": {"Vagrantfile": "ruby"}}
+vscode_settings: {"workbench.iconTheme": "material-icon-theme", "workbench.editorAssociations": {"*.ipynb": "jupyter.notebook.ipynb"}, "emmet.includeLanguages": {"javascript": "javascriptreact"}, "[javascript]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "editor.fontFamily": "Fira Code", "editor.fontLigatures": true, "editor.fontSize": 16, "[html]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "[handlebars]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "workbench.startupEditor": "none", "workbench.tree.indent": 15, "[typescriptreact]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "[json]": {"editor.defaultFormatter": "vscode.json-language-features"}, "editor.formatOnSave": true, "javascript.updateImportsOnFileMove.enabled": "always", "typescript.updateImportsOnFileMove.enabled": "always", "[typescript]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "git.openRepositoryInParentFolders": "always", "editor.minimap.enabled": false, "redhat.telemetry.enabled": false, "security.workspace.trust.untrustedFiles": "open", "[dockerfile]": {"editor.defaultFormatter": "foxundermoon.shell-format"}, "workbench.colorTheme": "Nord", "git.confirmSync": false, "terminal.integrated.fontFamily": "Fira Code", "terminal.integrated.fontSize": 16, "terminal.integrated.fontWeight": "normal"}
 vscode_keybindings: [{"key": "ctrl+'", "command": "workbench.action.terminal.focus"}, {"key": "ctrl+'", "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"}]
 
 docker_compose:
@@ -52,6 +52,16 @@ docker_compose:
   - rancher
   - vaultwarden
   spin_down_list:
+
+docker_hub:
+  access_key: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    37616137613830353338376336636636356366363438383132393330663230323364633836303966
+    6436656230316336613330323961363165343234396234380a303033373033616666363735633862
+    32663630316565626439653230626266303932396435623431363935613064313365326664613161
+    6561353632366562370a346530346334366435346365323265356134343337633038373736626238
+    66613039346631303938393731633433613736383631316365313035623833353735373337626233
+    6263633965626566363161323866633239313734623566336638
 
 gh:
   oauth_token: !vault |
@@ -154,7 +164,7 @@ azure_keys:
     35623031353438313337613661306362306430373862393231393038356530343139383131636466
     3766356264633464333239616564316661386264616262386161
 
-  ARM_CLIENT_SECERT: !vault |
+  ARM_CLIENT_SECRET: !vault |
     $ANSIBLE_VAULT;1.1;AES256
     31323631313366303639626365376530373030343664363962623935336335623035363161316534
     3533663532323135326638303764616566633931646261390a616530653765313665623766623861

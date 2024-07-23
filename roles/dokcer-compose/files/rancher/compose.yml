@@ -1,4 +1,4 @@
-name: Rancher
+name: rancher
 services:
   rancher:
     privileged: true
