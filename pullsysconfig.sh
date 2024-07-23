@@ -42,6 +42,28 @@ function redhat_config() {
 
 }
 
+function sync_ansible-galaxy() {
+    echo "Installing Ansible Galaxy Dependencies"
+    ansible-galaxy install -r $DOTFILES_DIR/requirements.yml
+}
+
+function vault_key_check() {
+    local vault_key_file=$(ANSIBLE_LOCALHOST_WARNING=False ANSIBLE_INVENTORY_UNPARSED_WARNING=False ansible localhost -m stat -a"path=$HOME/.ansible/vault/vault.yml" -u aravind -o | cut -d '>' -f 2)
+    local file_exists=$(echo "$vault_key_file" | jq '.stat.exists')
+
+    while true; do
+        if [ "$file_exists" == "false" ]; then
+            echo "Ansible Vault Master Key not found. Please place the key in $HOME/.ansible/vault/ and press any key"
+            read -n 1 key
+
+        else
+            echo "Vault Master key found"
+            return 0
+        fi
+    done
+}
+
+
 # Initialize variables
 distro_name=""
 os_family=""
@@ -66,26 +88,6 @@ while getopts ":d:o:" opt; do
     esac
 done
 
-function sync_ansible-galaxy() {
-    echo "Installing Ansible Galaxy Dependencies"
-    ansible-galaxy install -r $DOTFILES_DIR/requirements.yml
-}
-
-function vault_key_check() {
-    local vault_key_file=$(ANSIBLE_LOCALHOST_WARNING=False ANSIBLE_INVENTORY_UNPARSED_WARNING=False ansible localhost -m stat -a"path=$HOME/.ansible/vault/vault.yml" -u aravind -o | cut -d '>' -f 2)
-    local file_exists=$(echo "$vault_key_file" | jq '.stat.exists')
-
-    while true; do
-        if [ "$file_exists" == "false" ]; then
-            echo "Ansible Vault Master Key not found. Please place the key in $HOME/.ansible/vault/ and press any key"
-            read -n 1 key
-
-        else
-            echo "Vault Master key found"
-            return 0
-        fi
-    done
-}
 
 # Get OS Distribution type
 
@@ -113,7 +115,7 @@ if ! [[ -d "$DOTFILES_DIR" ]]; then
     git clone --quiet https://github.com/aravindr31/Ansible-System-Setup.git $DOTFILES_DIR
 else
     echo "Updating Config repo"
-    # git -C $DOTFILES_DIR pull --quiet
+    git -C $DOTFILES_DIR pull --quiet
 fi
 
 pushd $DOTFILES_DIR 2>&1 >/dev/null
@@ -124,6 +126,6 @@ vault_key_check
 
 ln -sf $DOTFILES_DIR/ansible.cfg $HOME/.ansible/ansible.cfg
 
-ansible-playbook main.yml
+ansible-playbook main.yml -u $USER 
 
 popd
