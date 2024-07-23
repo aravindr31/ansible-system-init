@@ -1,19 +1,19 @@
 - name: "SSH | Copy SSH keys"
   copy:
-    dest: "{{ playbook_dir }}/file/keys/ssh/{{ ssh_key_item.key }}"
+    dest: "{{ playbook_dir }}/files/keys/ssh/{{ ssh_key_item.key }}"
     content: "{{ ssh_key_item.value }}"
     mode: "0644"
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
 
-  no_log: true
+  # no_log: true
   loop_control:
     loop_var: ssh_key_item
   with_items: "{{ ssh_key | default({}) | dict2items }}"
 
 - name: SSH | Copy ssh config
   template:
-    dest: "{{playbook_dir}}/files/keys/config"
+    dest: "{{playbook_dir}}/files/keys/ssh/config"
     src: "{{playbook_dir}}/templates/ssh/ssh_config.j2"
 
 - name: SSH | create symlink
@@ -23,5 +23,6 @@
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
     state: link
+    force: true
 
   when: dry_run is false

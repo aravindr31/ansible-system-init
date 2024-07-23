@@ -1,2 +1,3 @@
 roles:
-- name: geerlingguy.docker gantsign.visual-studio-code
+- name: geerlingguy.docker
+- name: gantsign.visual-studio-code

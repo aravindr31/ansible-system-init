@@ -5,7 +5,7 @@ dotfile_git_repo: https://github.com/aravindr31/dotfiles.git
 dry_run: true # make it false to install and configure
 
 default_roles:
-# - alacritty
+- alacritty
 - docker-compose
 - gh
 # - k8s
@@ -14,10 +14,10 @@ default_roles:
 - nvm
 # - spotify
 - ssh
-- terraform
+# - terraform
 - tmux
-- vim
-- vscode
+# - vim
+# - vscode
 - zsh
 
 # NVM

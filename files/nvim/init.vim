@@ -53,10 +53,17 @@ Plug 'folke/tokyonight.nvim', { 'branch': 'main' } " Color scheme
 Plug 'preservim/nerdtree' "Nerd Tree
 Plug 'ctrlpvim/ctrlp.vim' "CtrlP
 Plug 'preservim/nerdcommenter' "commenter
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mattn/emmet-vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'} "coc nvim
+Plug 'mattn/emmet-vim' 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'pearofducks/ansible-vim', { 'do': './UltiSnips/generate.sh' }
+Plug 'pearofducks/ansible-vim', { 'do': './UltiSnips/generate.sh' } 
+Plug 'rebelot/kanagawa.nvim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'tpope/vim-fugitive'
+Plug 'lewis6991/gitsigns.nvim'
+" Plug 'SidOfc/carbon.nvim'
+" Plug 'nvim-tree/nvim-tree.lua'
 
 call plug#end()
 
@@ -81,10 +88,10 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 " background and colorscheme
 
 set background=dark
-colorscheme gruvbox
+colorscheme kanagawa
 
-
-
+let g:airline_theme='onehalfdark'
+" let g:airline#extensions#tabline#enabled = 1
 
 
 

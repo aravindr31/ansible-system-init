@@ -6,8 +6,8 @@
   - vars/main.yml
   - vars/packages.yml
 
-  handlers:
-  - include: handlers/source_handler.yml
+  # handlers:
+  # - include: handlers/source_handler.yml
 
   pre_tasks:
   - include_tasks:
@@ -32,14 +32,8 @@
       visual_studio_code_keybindings: "{{vscode_keybindings}}"
 
   tasks:
-  - name: source new config file
-    shell: |
-      source {{ansible_user_dir}}/.zshrc
-    args:
-      executable: /bin/zsh
-
-  notify:
-  - "source handler"
+  # notify:
+  # - "source handler"
   - name: package_install
     import_tasks: tasks/package_install.yml
     ignore_errors: true
@@ -70,5 +64,11 @@
         tags:
         - "{{item}}"
     with_items: "{{run_roles}}"
+    tags:
+    - always
+
+  - name: source new config file
+    shell: |
+      source {{ansible_user_dir}}/.zshrc
     tags:
     - always

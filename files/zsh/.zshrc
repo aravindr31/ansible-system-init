@@ -115,3 +115,4 @@ if [[ -f "$NVM_DIR/nvm.sh" ]]; then
 else
     echo "NVM not found"
 fi
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

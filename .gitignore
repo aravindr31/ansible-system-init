@@ -3,3 +3,4 @@ vault.yml
 tmp
 test
 files/zsh/configs/az_terraform.sh
+files/nvim/plugged
