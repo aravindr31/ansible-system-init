@@ -6,6 +6,7 @@
 - name: Alacritty | link config folder
   file:
     src: "{{playbook_dir}}/files/alacritty/"
-    dest: "{{ansible_user_dir}}/.config/alacritty/"
+    dest: "{{ansible_user_dir}}/.config/alacritty"
     mode: '0744'
     state: link
+    force: true

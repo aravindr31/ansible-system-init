@@ -5,7 +5,8 @@ dotfile_git_repo: https://github.com/aravindr31/dotfiles.git
 dry_run: true # make it false to install and configure
 
 default_roles:
-- alacritty
+# - alacritty
+- kitty
 - docker-compose
 - gh
 # - k8s
@@ -14,7 +15,7 @@ default_roles:
 - nvm
 # - spotify
 - ssh
-# - terraform
+- terraform
 - tmux
 # - vim
 # - vscode
@@ -34,24 +35,28 @@ vscode_source_url_debian: https://code.visualstudio.com/sha/download?build=stabl
 vscode_extentions_list: [ms-vscode-remote.remote-wsl, william-voyek.vscode-nginx, mhutchie.git-graph, redhat.vscode-yaml, esbenp.prettier-vscode, ms-vscode-remote.remote-containers, redhat.ansible, akamud.vscode-theme-onedark, wholroyd.jinja, foxundermoon.shell-format, unifiedjs.vscode-mdx, kennylong.kubernetes-yaml-formatter, mechatroner.rainbow-csv, pkief.material-icon-theme, xadillax.viml, astro-build.astro-vscode, ms-azuretools.vscode-docker, eamodio.gitlens, ms-python.python, ritwickdey.liveserver, ms-python.vscode-pylance, ms-kubernetes-tools.vscode-kubernetes-tools, redhat.java, arcticicestudio.nord-visual-studio-code, ms-azuretools.vscode-azureresourcegroups, ms-vscode.azure-account, ms-azuretools.vscode-azureterraform, 4ops.terraform, hashicorp.terraform]
 overwrite_settings: false
 overwrite_keybindngs: false
-vscode_settings: {"workbench.iconTheme": "material-icon-theme", "workbench.editorAssociations": {"*.ipynb": "jupyter.notebook.ipynb"}, "emmet.includeLanguages": {"javascript": "javascriptreact"}, "[javascript]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "editor.fontFamily": "Fira Code", "editor.fontLigatures": true, "editor.fontSize": 16, "[html]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "[handlebars]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "workbench.startupEditor": "none", "workbench.tree.indent": 15, "[typescriptreact]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "[json]": {"editor.defaultFormatter": "vscode.json-language-features"}, "editor.formatOnSave": true, "javascript.updateImportsOnFileMove.enabled": "always", "typescript.updateImportsOnFileMove.enabled": "always", "[typescript]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "git.openRepositoryInParentFolders": "always", "editor.minimap.enabled": false, "redhat.telemetry.enabled": false, "security.workspace.trust.untrustedFiles": "open", "[dockerfile]": {"editor.defaultFormatter": "foxundermoon.shell-format"}, "workbench.colorTheme": "Nord", "git.confirmSync": false, "terminal.integrated.fontFamily": "Fira Code", "terminal.integrated.fontSize": 16, "terminal.integrated.fontWeight": "normal"}
-vscode_keybindings: [{"key": "ctrl+'", "command": "workbench.action.terminal.focus"}, {"key": "ctrl+'", "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"}]
+# vscode_settings: {"workbench.iconTheme": "material-icon-theme", "workbench.editorAssociations": {"*.ipynb": "jupyter.notebook.ipynb"}, "emmet.includeLanguages": {"javascript": "javascriptreact"}, "[javascript]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "editor.fontFamily": "Fira Code", "editor.fontLigatures": true, "editor.fontSize": 16, "[html]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "[handlebars]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "workbench.startupEditor": "none", "workbench.tree.indent": 15, "[typescriptreact]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "[json]": {"editor.defaultFormatter": "vscode.json-language-features"}, "editor.formatOnSave": true, "javascript.updateImportsOnFileMove.enabled": "always", "typescript.updateImportsOnFileMove.enabled": "always", "[typescript]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "git.openRepositoryInParentFolders": "always", "editor.minimap.enabled": false, "redhat.telemetry.enabled": false, "security.workspace.trust.untrustedFiles": "open", "[dockerfile]": {"editor.defaultFormatter": "foxundermoon.shell-format"}, "workbench.colorTheme": "Nord", "git.confirmSync": false, "terminal.integrated.fontFamily": "Fira Code", "terminal.integrated.fontSize": 16, "terminal.integrated.fontWeight": "normal"}
+# vscode_keybindings: [{"key": "ctrl+'", "command": "workbench.action.terminal.focus"}, {"key": "ctrl+'", "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"}]
 
 docker_compose:
-
-  # Nginx Proxy Manager
-  nginx_proxy_manager:
-    email: admin@example.com
-    password: changeme
-
-  # Plex
-  plex:
-    PLEX_MEDIA_PATH: "{{home_folder}}/Media"
-
   spin_up_list:
-  - rancher
+  # - rancher
+  - traefik
   - vaultwarden
+
   spin_down_list:
+  - vaultwarden
+
+# Nginx Proxy Manager
+nginx_proxy_manager:
+  email: admin@example.com
+  password: changeme
+
+# Plex
+plex:
+  PLEX_MEDIA_PATH: "{{home_folder}}/Media"
+
+
 
 docker_hub:
   access_key: !vault |

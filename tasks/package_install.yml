@@ -7,7 +7,7 @@
   when: general_packages is defined
 
 - name: Install Debian-specific packages
-  package:
+  apt:
     name: "{{ item }}"
     state: present
   loop: "{{ debain_packages }}"
@@ -30,7 +30,7 @@
 
 
 - name: Install Arch-specific packages
-  package:
+  pacman:
     name: "{{ item }}"
     state: present
   loop: "{{ arch }}"

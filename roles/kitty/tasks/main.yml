@@ -1,0 +1,13 @@
+- name: Kitty | Make ure kitty is installed
+  package:
+    name: kitty
+    state: present
+
+- name: link kitty config file
+  file:
+    src: "{{playbook_dir}}/files/kitty/"
+    dest: "{{ansible_user_dir}}/.config/kitty"
+    state: link
+    mode: '0644'
+    force: true
+

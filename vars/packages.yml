@@ -12,12 +12,12 @@ general_packages:
 
 debain_packages:
 - kitty
-- alacritty
+
 
 redhat_packages:
 - kitty
-- alacritty
+
 
 arch_packages:
 - kitty
-- alacritty
+

@@ -12,6 +12,7 @@ services:
     volumes:
       - ./config/traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
+    container_name: "traefik"
 
 networks:
   vnet_internal:

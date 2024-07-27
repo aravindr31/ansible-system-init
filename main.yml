@@ -6,9 +6,6 @@
   - vars/main.yml
   - vars/packages.yml
 
-  # handlers:
-  # - include: handlers/source_handler.yml
-
   pre_tasks:
   - include_tasks:
       file: "{{item}}"
@@ -27,13 +24,11 @@
     - username: "{{ default_user }}"
       visual_studio_code_extensions: "{{ vscode_extentions_list }}"
       visual_studio_code_settings_overwrite: "{{ overwrite_settings }}"
-      visual_studio_code_settings: "{{ vscode_settings }}"
-      visual_studio_code_keybindings_overwrite: "{{ overwrite_keybindngs }}"
+      # visual_studio_code_settings: "{{ vscode_settings }}"
+      # visual_studio_code_keybindings_overwrite: "{{ overwrite_keybindngs }}"
       visual_studio_code_keybindings: "{{vscode_keybindings}}"
 
   tasks:
-  # notify:
-  # - "source handler"
   - name: package_install
     import_tasks: tasks/package_install.yml
     ignore_errors: true

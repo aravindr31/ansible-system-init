@@ -62,6 +62,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'kdheepak/lazygit.nvim'
 " Plug 'SidOfc/carbon.nvim'
 " Plug 'nvim-tree/nvim-tree.lua'
 

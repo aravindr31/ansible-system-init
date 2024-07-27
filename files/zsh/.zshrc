@@ -92,6 +92,10 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+setopt extendedglob
+
+# setup custom bash scripts
+
 if [[ -f "$HOME/.config/bash/.bash_private" ]]; then
     source "$HOME/.config/bash/.bash_private"
 fi
@@ -99,6 +103,8 @@ fi
 for file in $HOME/.config/bash/*.sh; do
     source "$file"
 done
+
+# export function for azure keys
 
 function azconnect {
     if [[ -f "$HOME/keys/Az-terraform.sh" ]]; then
@@ -108,11 +114,17 @@ function azconnect {
     fi
 }
 
+# setting up NVM
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 
 if [[ -f "$NVM_DIR/nvm.sh" ]]; then
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-else
-    echo "NVM not found"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 fi
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# adding $HOME/Apps folder to PATH
+
+if ! [[ -d "$HOME/Apps" ]]; then
+    mkdir $HOME/Apps
+fi
+export PATH="$HOME/Apps:$PATH"
