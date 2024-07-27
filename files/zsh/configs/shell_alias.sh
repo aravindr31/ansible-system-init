@@ -32,6 +32,7 @@ alias ga="git add --all"
 alias gp="git push"
 alias gs="git status"
 alias ghc="gh repo create"
+alias lg="lazygit"
 alias ns="npm start"
 
 alias dm="dmenu_run"

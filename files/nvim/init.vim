@@ -1,7 +1,7 @@
 set termguicolors
-set tabstop=4 
+set tabstop=2 
 set softtabstop=4
-set shiftwidth=4
+set shiftwidth=2
 set expandtab
 set smartindent
 set number
