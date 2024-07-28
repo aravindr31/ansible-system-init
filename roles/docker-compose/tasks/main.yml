@@ -1,4 +1,10 @@
 - block:
+  - name: Docker Compose | Pull images from registry
+    command:
+      cmd: docker compose pull
+    args:
+      chdir: "{{ playbook_dir }}/roles/docker-compose/files/{{ item_up }}/"
+
   - name: Docker Compose | provision the containers in spin up list
     command:
       cmd: docker compose up -d

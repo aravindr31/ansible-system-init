@@ -1,0 +1,22 @@
+- name: ansible_notifier
+  community.general.discord:
+    webhook_id: "{{discord_webhook.id}}"
+    webhook_token: "{{discord_webhook.token}}"
+    embeds:
+    - title: Ansible Notifier
+      description: "{{ 'System configuration failed' if ansible_failed is defined else 'System configuration is complete' }}"
+      footer:
+        text: "Author: Ansible"
+      image:
+        url: "https://docs.ansible.com/ansible/latest/_static/images/logo_invert.png"
+    username: Ansible
+
+    # avatar_url: "https://docs.ansible.com/ansible/latest/_static/images/logo_invert.png"
+
+# - name: playbook_failed
+#   community.general.discord:
+#     webhook_id: "{{discord_webhook.id}}"
+#     webhook_token: "{{discord_webhook.token}}"
+#     content: "System configuration failed."
+#     username: Ansible
+#     avatar_url: "https://docs.ansible.com/ansible/latest/_static/images/logo_invert.png"

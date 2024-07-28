@@ -1,42 +1,43 @@
-- name: package install
-  package:
-    name: "{{ item }}"
-    state: present
-  loop: "{{ general_packages }}"
+- block:
+  - name: package install
+    package:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ general_packages }}"
 
-  when: general_packages is defined
+    when: general_packages is defined
 
-- name: Install Debian-specific packages
-  apt:
-    name: "{{ item }}"
-    state: present
-  loop: "{{ debain_packages }}"
+  - name: Install Debian-specific packages
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ debain_packages }}"
 
-  when:
-  - ansible_distribution in ['Debian', 'Ubuntu']
-  - debain_packages is defined
-  - ansible_host_environment_is_wsl is false
+    when:
+    - ansible_distribution in ['Debian', 'Ubuntu']
+    - debain_packages is defined
+    - ansible_host_environment_is_wsl is false
 
-- name: Install RedHat-specific packages
-  package:
-    name: "{{ item }}"
-    state: present
-  loop: "{{ redhat_packages }}"
+  - name: Install RedHat-specific packages
+    dnf:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ redhat_packages }}"
 
-  when:
-  - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
-  - redhat_packages is defined
-  - ansible_host_environment_is_wsl is false
+    when:
+    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
+    - redhat_packages is defined
+    - ansible_host_environment_is_wsl is false
 
 
-- name: Install Arch-specific packages
-  pacman:
-    name: "{{ item }}"
-    state: present
-  loop: "{{ arch }}"
+  - name: Install Arch-specific packages
+    pacman:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ arch_packages }}"
 
-  when:
-  - ansible_distribution in ['Arch', 'Manjaro']
-  - arch_packages is defined
-  - ansible_host_environment_is_wsl is false
-
+    when:
+    - ansible_distribution in ['Archlinux', 'Manjaro']
+    - arch_packages is defined
+    - ansible_host_environment_is_wsl is false
+  become: true

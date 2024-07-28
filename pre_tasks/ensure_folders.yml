@@ -2,12 +2,12 @@
   file:
     path: "{{item}}"
     state: directory
-    mode: '0744'
+    mode: '0755'
     owner: 'aravind'
     group: 'aravind'
   loop:
-  - "{{home_folder}}/Repos"
-  - "{{home_folder}}/Mount"
+  - "{{home_folder}}/repos"
+  - "{{home_folder}}/Mountpoint"
   - "{{home_folder}}/System"
   - "{{home_folder}}/Media"
   - "{{playbook_dir}}/files/keys"

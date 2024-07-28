@@ -2,7 +2,8 @@
 default_user: "aravind"
 home_folder: "{{'/home/' + default_user}}"
 dotfile_git_repo: https://github.com/aravindr31/dotfiles.git
-dry_run: true # make it false to install and configure
+avatar_url: "https://www.ansible.com/images/project-logos/ansible-core.svg"
+dry_run: false # make it false to install and configure
 
 default_roles:
 # - alacritty
@@ -17,9 +18,14 @@ default_roles:
 - ssh
 - terraform
 - tmux
+- git
 # - vim
 # - vscode
 - zsh
+
+git:
+  name: Aravind
+  email: aravindr597@gmail.com
 
 # NVM
 nvm_install_script_url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh
@@ -29,14 +35,6 @@ oh_my_zsh_source_url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/t
 keep_current_zsh_config: yes
 run_zsh_shell_after_install: yes
 change_shell_after_install: yes
-
-# Visual Studio Code
-vscode_source_url_debian: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-vscode_extentions_list: [ms-vscode-remote.remote-wsl, william-voyek.vscode-nginx, mhutchie.git-graph, redhat.vscode-yaml, esbenp.prettier-vscode, ms-vscode-remote.remote-containers, redhat.ansible, akamud.vscode-theme-onedark, wholroyd.jinja, foxundermoon.shell-format, unifiedjs.vscode-mdx, kennylong.kubernetes-yaml-formatter, mechatroner.rainbow-csv, pkief.material-icon-theme, xadillax.viml, astro-build.astro-vscode, ms-azuretools.vscode-docker, eamodio.gitlens, ms-python.python, ritwickdey.liveserver, ms-python.vscode-pylance, ms-kubernetes-tools.vscode-kubernetes-tools, redhat.java, arcticicestudio.nord-visual-studio-code, ms-azuretools.vscode-azureresourcegroups, ms-vscode.azure-account, ms-azuretools.vscode-azureterraform, 4ops.terraform, hashicorp.terraform]
-overwrite_settings: false
-overwrite_keybindngs: false
-# vscode_settings: {"workbench.iconTheme": "material-icon-theme", "workbench.editorAssociations": {"*.ipynb": "jupyter.notebook.ipynb"}, "emmet.includeLanguages": {"javascript": "javascriptreact"}, "[javascript]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "editor.fontFamily": "Fira Code", "editor.fontLigatures": true, "editor.fontSize": 16, "[html]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "[handlebars]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "workbench.startupEditor": "none", "workbench.tree.indent": 15, "[typescriptreact]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "[json]": {"editor.defaultFormatter": "vscode.json-language-features"}, "editor.formatOnSave": true, "javascript.updateImportsOnFileMove.enabled": "always", "typescript.updateImportsOnFileMove.enabled": "always", "[typescript]": {"editor.defaultFormatter": "esbenp.prettier-vscode"}, "git.openRepositoryInParentFolders": "always", "editor.minimap.enabled": false, "redhat.telemetry.enabled": false, "security.workspace.trust.untrustedFiles": "open", "[dockerfile]": {"editor.defaultFormatter": "foxundermoon.shell-format"}, "workbench.colorTheme": "Nord", "git.confirmSync": false, "terminal.integrated.fontFamily": "Fira Code", "terminal.integrated.fontSize": 16, "terminal.integrated.fontWeight": "normal"}
-# vscode_keybindings: [{"key": "ctrl+'", "command": "workbench.action.terminal.focus"}, {"key": "ctrl+'", "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"}]
 
 docker_compose:
   spin_up_list:
@@ -56,7 +54,25 @@ nginx_proxy_manager:
 plex:
   PLEX_MEDIA_PATH: "{{home_folder}}/Media"
 
+discord_webhook:
+  id: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    61346366366636396366663432343962343038636634623930363263323732643933646562633438
+    6566376432653136396662643562376563393632356133640a613938643439373266636536386566
+    37643131303533393762636363343632656537663039386665626535616131386635616630353938
+    3461356537663139390a303339643036313531326139363035333438653261646363323863376238
+    33646164343932316263623434316138626432396637613432613837643761616364
 
+  token: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    33346161623633393261653262663032343866363530356139376263316338376635386163376134
+    6464313265666561363431333831616663636433626638360a616537636435626563653037373231
+    64376532666265303236323037323131373838666163393337663163393733636366646337323562
+    6662303936663765650a303530633964373831376661373934333134356438636565386162643734
+    34323532386431636430386330666665343066656134396463353464333863626165343866666166
+    34373636383635653936643537383531626133333236326536663763656637623335353566626164
+    63613036343136386166616432653732396565636661393636353462666630373862636338333033
+    64633134336630343463
 
 docker_hub:
   access_key: !vault |

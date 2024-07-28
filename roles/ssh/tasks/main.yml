@@ -2,7 +2,7 @@
   copy:
     dest: "{{ playbook_dir }}/files/keys/ssh/{{ ssh_key_item.key }}"
     content: "{{ ssh_key_item.value }}"
-    mode: "0600"
+    mode: "0644"
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
 
@@ -15,7 +15,7 @@
   template:
     dest: "{{playbook_dir}}/files/keys/ssh/config"
     src: "{{playbook_dir}}/templates/ssh/ssh_config.j2"
-    mode: "0600"
+    mode: "0644"
 - name: SSH | create symlink
   file:
     src: "{{playbook_dir}}/files/keys/ssh"
@@ -24,5 +24,4 @@
     group: "{{ default_user }}"
     state: link
     force: true
-
-  when: dry_run is false
+  when: dry_run == false

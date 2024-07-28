@@ -1,4 +1,4 @@
-- name: zsh | check for ohmyzsh install
+- name: ZSH | check for ohmyzsh install
   stat:
     path: $HOME/.oh-my-zsh
   register: folder_state
@@ -36,6 +36,12 @@
   when: folder_state.stat.exists == false
 
 - block:
+  - name: ZSH | generate terraform connector
+    template:
+      src: "{{playbook_dir}}/templates/zsh/configs/az_terraform.j2"
+      dest: "{{playbook_dir}}/files/zsh/configs/az_terraform.sh"
+      mode: "0744"
+
   - name: ZSH | link custom configs to .config/bash
     file:
       src: "{{playbook_dir}}/files/zsh/configs"
@@ -51,4 +57,4 @@
       mode: '0644'
       state: link
       force: true
-  when: dry_run is false
+  when: dry_run == false

@@ -11,4 +11,4 @@
     group: "{{ default_user }}"
     state: link
     force: true
-  when: dry_run is false
+  when: dry_run == false

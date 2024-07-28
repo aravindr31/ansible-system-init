@@ -1,6 +1,6 @@
 - name: Github Cli | install Github Cli
   package:
-    name: gh
+    name: github-cli
     state: present
 
 - name: Github Cli | copy host.yml file
@@ -15,4 +15,4 @@
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
     state: link
-  when: dry_run is false
+  # when: dry_run == false
