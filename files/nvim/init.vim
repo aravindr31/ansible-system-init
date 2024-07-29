@@ -25,6 +25,7 @@ set noshowmode
 set updatetime=250 
 set encoding=UTF-8
 set mouse=a
+"set spell
 
 " Install vim-plug if not found
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -33,7 +34,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Run PlugInstall if there are missing plugins
+" Run Plug Install if there are missing plugins
     autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
         \| PlugInstall --sync | source $MYVIMRC
       \| endif
@@ -63,8 +64,6 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'kdheepak/lazygit.nvim'
-" Plug 'SidOfc/carbon.nvim'
-" Plug 'nvim-tree/nvim-tree.lua'
 
 call plug#end()
 
@@ -82,6 +81,9 @@ vmap // <plug>NERDCommenterToggle
 nmap // <plug>NERDCommenterToggle
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
+" lazygit
+nmap <C-g> :LazyGit<CR>
+
 
 "inoremap <c-/> ++<cr>
 "nnoremap <c-/> ++<cr>
@@ -92,6 +94,7 @@ set background=dark
 colorscheme kanagawa
 
 let g:airline_theme='onehalfdark'
+
 " let g:airline#extensions#tabline#enabled = 1
 
 
