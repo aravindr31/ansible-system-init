@@ -38,7 +38,6 @@ endif
     autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
         \| PlugInstall --sync | source $MYVIMRC
       \| endif
-
 " call plugins
 call plug#begin('$HOME/.config/nvim/plugged')
 
@@ -50,6 +49,8 @@ Plug 'tc50cal/vim-terminal' " Vim Terminal
 Plug 'vim-airline/vim-airline' " Status bar
 Plug 'neovim/nvim-lspconfig' "neovim lsp
 Plug 'mbbill/undotree' " undotree
+Plug 'nvim-lua/plenary.nvim' 
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' } " Color scheme
 Plug 'preservim/nerdtree' "Nerd Tree
 Plug 'ctrlpvim/ctrlp.vim' "CtrlP
@@ -64,6 +65,8 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'kdheepak/lazygit.nvim'
+Plug 'junegunn/fzf.vim'
+
 
 call plug#end()
 
@@ -84,6 +87,10 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 " lazygit
 nmap <C-g> :LazyGit<CR>
 
+"telescope
+
+nmap <C-f> :Telescope find_files <CR>
+nmap <C-d> :Telescope live_grep <CR>
 
 "inoremap <c-/> ++<cr>
 "nnoremap <c-/> ++<cr>
