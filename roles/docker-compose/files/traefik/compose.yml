@@ -3,17 +3,17 @@ services:
   traefik:
     image: "traefik:latest"
     restart: unless-stopped
-    networks:
-      - vnet_internal
+    #networks:
+      #- vnet_internal
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
-      - ./config/traefik.yml:/etc/traefik/traefik.yml
+      - $HOME/repos/docker/volumes/traefik/config/traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
     container_name: "traefik"
 
-networks:
-  vnet_internal:
-    external: true
+#networks:
+  #vnet_internal:
+    #external: true

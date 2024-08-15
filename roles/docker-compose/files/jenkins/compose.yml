@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - $HOME/repos/docker/volumes/jenkins/jenkins-data:/var/jenkins_home
+    ports:
+      - 8081:8080
+      - 50000:50000
