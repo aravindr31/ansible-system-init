@@ -128,3 +128,10 @@ if ! [[ -d "$HOME/Apps" ]]; then
     mkdir $HOME/Apps
 fi
 export PATH="$HOME/Apps:$PATH"
+
+function boot_windows ()
+{
+    windows_title=$(grep -i windows /boot/grub/grub.cfg | cut -d "'" -f 2)
+    sudo grub-reboot "$windows_title" && sudo reboot
+}
+alias boot_win='boot_windows'

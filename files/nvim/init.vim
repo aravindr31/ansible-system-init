@@ -66,7 +66,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'kdheepak/lazygit.nvim'
 Plug 'junegunn/fzf.vim'
-
+Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+"Plug 'nvimdev/dashboard-nvim'
 
 call plug#end()
 

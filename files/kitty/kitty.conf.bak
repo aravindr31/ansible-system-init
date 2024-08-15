@@ -13,7 +13,7 @@ padding : 8
  italic_font      auto
  bold_italic_font auto
 
- font_size 13.0
+ font_size 12.0
  force_ltr yes
  adjust_line_height  0
  adjust_column_width 0
@@ -73,6 +73,6 @@ padding : 8
 
 
 # BEGIN_KITTY_THEME
-# Kanagawa
+# purpurite
 include current-theme.conf
 # END_KITTY_THEME

@@ -12,7 +12,7 @@ alias cls="clear"
 alias ls="lsd"
 alias ll='lsd -hAl --group-directories-first'
 alias pac="sudo pacman"
-# alias upgrade="sudo pacman -Syu"
+alias upgrade="sudo pacman -Syyu --noconfirm"
 alias b="light -S"
 alias bx="xrandr --output eDP1  --brightness"
 
