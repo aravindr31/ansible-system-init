@@ -2,10 +2,14 @@ services:
   app:
     image: "docker.io/jc21/nginx-proxy-manager:latest"
     restart: unless-stopped
+    container_name: proxyman
+    command:
+      - mount --bind /data/certificates /etc/letsencrypt
     ports:
       - "80:80"
       - "81:81"
       - "443:443"
     volumes:
       - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      
+      #- ./letsencrypt:/etc/letsencrypt

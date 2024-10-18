@@ -10,18 +10,18 @@ general_packages:
 - neovim
 - docker-compose
 - ranger
+- vlc
+- tor
 
 debain_packages:
 - kitty
 - veracrypt
 - keepassxc
-- vlc
 
 redhat_packages:
 - kitty
 - veracrypt
 - keepassxc
-- vlc
 
 arch_packages:
 - kitty
@@ -29,4 +29,3 @@ arch_packages:
 - fakeroot
 - veracrypt
 - keepassxc
-- vlc

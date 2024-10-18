@@ -1,9 +1,17 @@
-version: "1.0"
 services:
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden
+    environment:
+      - TARGET_HOST=localhost
+      - ROCKET_PORT=17080
+      - SERVER_PORT=45989
+      - ALLOWED_HOSTS=localhost,proxymanager.southindia.azurecontainer.io
+      - DEBUG_PROXY=true
+    #command: sh -c "/proxy/startapps.sh"
     ports:
-      - 8090:80
+      - 4545:45989
+      - 5454:17080
     volumes:
-      - /vm-data/:/data/
+      - /vm/vm-data/:/data/
+      - /vm/proxy/:/proxy/

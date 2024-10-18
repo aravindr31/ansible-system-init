@@ -1,19 +1,12 @@
-name: traefik
 services:
   traefik:
-    image: "traefik:latest"
-    restart: unless-stopped
-    #networks:
-      #- vnet_internal
+    image: traefik:latest
+    command:
+      - --configFile=/etc/traefik/traefik.yml
     ports:
-      - "80:80"
+      - "81:80" # The HTTP port
+      - "8081:8080" # The Dashboard port
       - "443:443"
-      - "8080:8080"
     volumes:
-      - $HOME/repos/docker/volumes/traefik/config/traefik.yml:/etc/traefik/traefik.yml
-      - /var/run/docker.sock:/var/run/docker.sock
-    container_name: "traefik"
-
-#networks:
-  #vnet_internal:
-    #external: true
+      - "./config:/etc/traefik/"
+      - "/var/run/docker.sock:/var/run/docker.sock"

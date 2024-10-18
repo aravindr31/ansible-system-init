@@ -1,0 +1,52 @@
+http:
+  routers:
+
+    api:
+      entryPoints:
+      - web
+      - websecure
+      service: "api@internal"
+      rule: "HOST(`localhost`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      middlewares:
+      - user-auth
+      tls:
+        certResolver: 'letsencrypt'
+
+    vaultwarden:
+      entryPoints:
+      - web
+      - websecure
+      service: vaultwarden_service
+      rule: "HOST(`localhost`) && Path(`/vault`)"
+      tls:
+        certResolver: 'letsencrypt'
+
+  services:
+    vaultwarden_service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://localhost:4545
+
+  middlewares:
+
+    user-auth:
+      digestAuth:
+        users:
+        - "prometheus:traefik:f9a1613e41ffd1b263b1f3185c817130"
+
+    secureHeaders:
+      headers:
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 31536000
+
+
+tls:
+  options:
+    default:
+      cipherSuites:
+      - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+      maxVersion: VersionTLS13
+

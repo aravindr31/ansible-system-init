@@ -130,8 +130,4 @@ ansible-playbook main.yml -u $USER
 
 popd
 
-# Updating system
-
-if [[$os_family == "arch"]]; then
-  sudo pacman -Syyu --noconfirm
-fi
+sudo pacman -Syyu --noconfim

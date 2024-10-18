@@ -4,57 +4,57 @@
   register: folder_state
 
 - block:
-  - name: ZSH | get ohmyzsh
-    uri:
-      url: "{{ oh_my_zsh_source_url }}"
-      method: GET
-      follow_redirects: safe
-      body_format: raw
-      return_content: true
-    register: zsh_install
+    - name: ZSH | get ohmyzsh
+      uri:
+        url: "{{ oh_my_zsh_source_url }}"
+        method: GET
+        follow_redirects: safe
+        body_format: raw
+        return_content: true
+      register: zsh_install
 
-  - name: ZSH | save install.sh
-    copy:
-      content: "{{ zsh_install.content }}"
-      dest: "{{ansible_env.PWD}}/tmp/zsh_install.sh"
-      mode: '0744'
+    - name: ZSH | save install.sh
+      copy:
+        content: "{{ zsh_install.content }}"
+        dest: "{{ansible_env.PWD}}/tmp/zsh_install.sh"
+        mode: "0744"
 
-  - name: ZSH | Install oh-my-zsh
-    shell: |
-      "{{ ansible_env.PWD }}/tmp/zsh_install.sh"
-    environment:
-      KEEP_ZSHRC: "{{ keep_current_zsh_config }}"
-      RUNZSH: "{{ run_zsh_shell_after_install }}"
-      CHSH: "{{ change_shell_after_install }}"
+    - name: ZSH | Install oh-my-zsh
+      shell: |
+        "{{ ansible_env.PWD }}/tmp/zsh_install.sh"
+      environment:
+        KEEP_ZSHRC: "{{ keep_current_zsh_config }}"
+        RUNZSH: "{{ run_zsh_shell_after_install }}"
+        CHSH: "{{ change_shell_after_install }}"
 
-  - name: ZSH | remove tmp install file
-    file:
-      path: "{{ansible_env.PWD}}/tmp/zsh_install.sh"
-      state: absent
-    tags: always
+    - name: ZSH | remove tmp install file
+      file:
+        path: "{{ansible_env.PWD}}/tmp/zsh_install.sh"
+        state: absent
+      tags: always
 
   when: folder_state.stat.exists == false
 
 - block:
-  - name: ZSH | generate terraform connector
-    template:
-      src: "{{playbook_dir}}/templates/zsh/configs/az_terraform.j2"
-      dest: "{{playbook_dir}}/files/zsh/configs/az_terraform.sh"
-      mode: "0744"
+    - name: ZSH | generate terraform connector
+      template:
+        src: "{{playbook_dir}}/templates/zsh/configs/az_terraform.j2"
+        dest: "{{playbook_dir}}/files/zsh/configs/az_terraform.sh"
+        mode: "0744"
 
-  - name: ZSH | link custom configs to .config/bash
-    file:
-      src: "{{playbook_dir}}/files/zsh/configs"
-      dest: "{{ansible_user_dir}}/.config/bash"
-      mode: "0744"
-      state: link
-      force: true
+    - name: ZSH | link custom configs to .config/bash
+      file:
+        src: "{{playbook_dir}}/files/zsh/configs"
+        dest: "{{ansible_user_dir}}/.config/bash"
+        mode: "0744"
+        state: link
+        force: true
 
-  - name: ZSH | link custom .zshrc to base loc
-    file:
-      src: "{{ansible_env.PWD}}/files/zsh/.zshrc"
-      dest: "{{ ansible_user_dir }}/.zshrc"
-      mode: '0644'
-      state: link
-      force: true
+    - name: ZSH | link custom .zshrc to base loc
+      file:
+        src: "{{ansible_env.PWD}}/files/zsh/.zshrc"
+        dest: "{{ ansible_user_dir }}/.zshrc"
+        mode: "0644"
+        state: link
+        force: true
   when: dry_run == false

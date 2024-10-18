@@ -1,17 +1,20 @@
-- name: "Git | Set user.name"
-  community.general.git_config:
-    name: user.name
-    scope: global
-    value: "{{ git.name }}"
+- block:
+    - name: "Git | Set user.name"
+      community.general.git_config:
+        name: user.name
+        scope: global
+        value: "{{ git.name }}"
 
-- name: "Git | Set user.name"
-  community.general.git_config:
-    name: user.email
-    scope: global
-    value: "{{ git.email }}"
+    - name: "Git | Set user.name"
+      community.general.git_config:
+        name: user.email
+        scope: global
+        value: "{{ git.email }}"
 
-- name: "Git | Set user.signingkey"
-  community.general.git_config:
-    name: user.signingkey
-    scope: global
-    value: "{{ ansible_user_dir }}/.ssh/git_admin_key.pub"
+    - name: "Git | Set user.signingkey"
+      community.general.git_config:
+        name: user.signingkey
+        scope: global
+        value: "{{ ansible_user_dir }}/.ssh/git_admin_key.pub"
+  when:
+    - dry_run == false

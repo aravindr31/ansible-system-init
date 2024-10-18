@@ -25,7 +25,7 @@ padding : 8
 
 : Color scheme {{{
 
- background_opacity .95
+ background_opacity .99
  dynamic_background_opacity yes
 # background #000000
 # foreground #ebdbb2
@@ -73,6 +73,6 @@ padding : 8
 
 
 # BEGIN_KITTY_THEME
-# purpurite
-include current-theme.conf
+# Kanagawa_dragon
+include one_half_dark.conf
 # END_KITTY_THEME

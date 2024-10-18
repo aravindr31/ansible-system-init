@@ -1,33 +1,35 @@
 - block:
-  - name: Docker Compose | Pull images from registry
-    command:
-      cmd: docker compose pull
-    args:
-      chdir: "{{ playbook_dir }}/roles/docker-compose/files/{{ item_up }}/"
+    - name: Docker Compose | Pull images from registry
+      command:
+        cmd: docker compose pull
+      args:
+        chdir: "{{ playbook_dir }}/roles/docker-compose/files/{{ item_up }}/"
 
-  - name: Docker Compose | provision the containers in spin up list
-    command:
-      cmd: docker compose up -d
-    args:
-      chdir: "{{ playbook_dir }}/roles/docker-compose/files/{{ item_up }}/"
+    - name: Docker Compose | provision the containers in spin up list
+      command:
+        cmd: docker compose up -d
+      args:
+        chdir: "{{ playbook_dir }}/roles/docker-compose/files/{{ item_up }}/"
 
-    loop: "{{ docker_compose.spin_up_list }}"
-    loop_control:
-      loop_var: item_up
+      loop: "{{ docker_compose.spin_up_list }}"
+      loop_control:
+        loop_var: item_up
 
-  when: docker_compose.spin_up_list | length != 0
+  when:
+    - docker_compose.spin_up_list | length != 0
+    - dry_run == false
 
 - block:
-  - name: Docker Compose | destroy the containers in spin down list
-    command:
-      cmd: docker compose down
-    args:
-      chdir: "{{ playbook_dir }}/roles/docker-compose/files/{{item_down}}/"
+    - name: Docker Compose | destroy the containers in spin down list
+      command:
+        cmd: docker compose down
+      args:
+        chdir: "{{ playbook_dir }}/roles/docker-compose/files/{{item_down}}/"
 
-    loop: "{{docker_compose.spin_down_list}}"
-    loop_control:
-      loop_var: item_down
+      loop: "{{docker_compose.spin_down_list}}"
+      loop_control:
+        loop_var: item_down
 
-  when: docker_compose.spin_down_list | length != 0
-
-
+  when:
+    - docker_compose.spin_down_list | length != 0
+    - dry_run == false

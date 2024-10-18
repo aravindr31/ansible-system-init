@@ -4,41 +4,36 @@ global:
 
 api:
   dashboard: true
-  insecure: true
 
 entryPoints:
   web:
-    address: '80'
-    # http:
-    #   redirections:
-    #     entryPoint:
-    #       to: websecure
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
 
   websecure:
-    address: '443'
-    # http:
-    #   middlewares:
-    #     secureHeaders:
-    #       headers:
-    #         forceSTSHeader: true
-    #         stsIncludeSubdomains: true
-    #         stsPreload: true
-    #         stsSeconds: 31536000
-    #   tls:
-    #     certResolver: letsencrypt
+    address: :443
+    http:
+      middlewares:
+      - secureHeaders@file
+      tls:
+        certResolver: letsencrypt
 
-# providers:
-#   docker:
-#     endpoint: unix:///var/run/docker.sock
-#     watch: true
-#     exposedByDefault: false
+providers:
+  file:
+    directory: "/etc/traefik/config"
+    watch: true
 
-# certificatesResolvers:
-#   letsencrypt:
-#     acme:
-#       email: "aravindr597@gmail.com"
-#       storage: acme.json
-#       keyType: 'EC256'
-#       certificatesDuration: 2160
-#       httpChallenge:
-#         entryPoint: web
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "aravindr597@gmail.com"
+      storage: /traefik/acme.json
+      keyType: 'EC256'
+      certificatesDuration: 2160
+      httpChallenge:
+        entryPoint: web
+
+

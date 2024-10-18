@@ -11,11 +11,12 @@
   copy:
     content: "{{nvm_install.content }}"
     dest: "{{playbook_dir}}/tmp/nvm_install.sh"
-    mode: '0744'
+    mode: "0744"
 
 - name: NVM | Execute Install script
   shell: |
     "{{ playbook_dir }}/tmp/nvm_install.sh"
+  when: dry_run == false
 
 - name: NVM | Remove tmp install file
   file:

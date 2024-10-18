@@ -9,7 +9,10 @@ source "$HOME/.config/bash/typewritten.zsh"
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="typewritten"
+#ZSH_THEME="typewritten"
+
+ZSH_THEME="af-magic"
+
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -131,7 +134,11 @@ export PATH="$HOME/Apps:$PATH"
 
 function boot_windows ()
 {
-    windows_title=$(grep -i windows /boot/grub/grub.cfg | cut -d "'" -f 2)
+    windows_title=$(sudo grep -i windows /boot/grub/grub.cfg | cut -d "'" -f 2)
     sudo grub-reboot "$windows_title" && sudo reboot
 }
 alias boot_win='boot_windows'
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
