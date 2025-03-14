@@ -1,44 +1,24 @@
 - block:
-  - name: package install
-    package:
-      name: "{{ item }}"
+  - name: Check if Homebrew is installed
+    stat:
+      path: /usr/local/bin/brew
+    register: homebrew_check
+
+  - name: Install Homebrew if not present
+    shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    when: not homebrew_check.stat.exists
+
+  - name: Update Homebrew
+    homebrew:
+      update_homebrew: yes
+
+  - name: Install Homebrew packages
+    homebrew:
+      name: "{{ brew_packages }}"
       state: present
-    loop: "{{ general_packages }}"
 
-    when: general_packages is defined
-
-  - name: Install Debian-specific packages
-    apt:
-      name: "{{ item }}"
+  - name: Install Homebrew Cask applications
+    homebrew_cask:
+      name: "{{ brew_cask_packages }}"
       state: present
-    loop: "{{ debain_packages }}"
-
-    when:
-    - ansible_distribution in ['Debian', 'Ubuntu']
-    - debain_packages is defined
-    - ansible_host_environment_is_wsl is false
-
-  - name: Install RedHat-specific packages
-    dnf:
-      name: "{{ item }}"
-      state: present
-    loop: "{{ redhat_packages }}"
-
-    when:
-    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
-    - redhat_packages is defined
-    - ansible_host_environment_is_wsl is false
-
-
-  - name: Install Arch-specific packages
-    pacman:
-      name: "{{ item }}"
-      state: present
-    loop: "{{ arch_packages }}"
-
-    when:
-    - ansible_distribution in ['Archlinux', 'Manjaro']
-    - arch_packages is defined
-    - ansible_host_environment_is_wsl is false
-  become: true
-  
+  become: false

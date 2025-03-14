@@ -1,5 +1,5 @@
 - name: Tmux | install Tmux
-  package:
+  homebrew:
     name: tmux
     state: present
 
@@ -8,7 +8,7 @@
     src: "{{playbook_dir}}/files/tmux/tmux.conf"
     path: "{{ ansible_user_dir }}/.tmux.conf"
     owner: "{{ default_user }}"
-    group: "{{ default_user }}"
+    group: "{{ default_group }}"
     state: link
     force: true
   when: dry_run == false

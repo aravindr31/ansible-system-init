@@ -1,22 +1,23 @@
 # general variables
 default_user: "aravind"
-home_folder: "{{'/home/' + default_user}}"
+default_group: "staff"
+home_folder: "{{ ansible_env.HOME }}"
 dotfile_git_repo: https://github.com/aravindr31/dotfiles.git
 avatar_url: "https://www.ansible.com/images/project-logos/ansible-core.svg"
-dry_run: true # make it false to install and configure
+dry_run: false # make it false to install and configure
 
 default_roles:
 # - alacritty
 - kitty
-- docker-compose
-- gh
+# - docker-compose
+# - gh
 # - k8s
 # - nginx
 - nvim
-- nvm
+# - nvm
 # - spotify
 - ssh
-- terraform
+# - terraform
 - tmux
 - git
 # - vim
@@ -37,15 +38,15 @@ run_zsh_shell_after_install: yes
 change_shell_after_install: yes
 
 docker_compose:
-  spin_up_list:
-  # - rancher
-  - traefik
-  - vaultwarden
+  spin_up_list: # - rancher
+
+  # - traefik
+  # - vaultwarden
 
   spin_down_list:
-  - vaultwarden
+    # - vaultwarden
 
-# Nginx Proxy Manager
+    # Nginx Proxy Manager
 nginx_proxy_manager:
   email: admin@example.com
   password: changeme

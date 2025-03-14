@@ -3,13 +3,11 @@
     path: "{{item}}"
     state: directory
     mode: '0755'
-    owner: 'aravind'
-    group: 'aravind'
+    owner: '{{ default_user }}'
+    group: '{{ default_group }}'
   loop:
   - "{{home_folder}}/repos"
   - "{{home_folder}}/Mountpoint"
-  - "{{home_folder}}/System"
-  - "{{home_folder}}/Media"
   - "{{playbook_dir}}/files/keys"
   - "{{playbook_dir}}/files/keys/ssh"
   - "{{ansible_env.PWD}}/tmp"

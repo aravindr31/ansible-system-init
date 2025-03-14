@@ -1,5 +1,5 @@
 - name: Kitty | Make ure kitty is installed
-  package:
+  homebrew_cask:
     name: kitty
     state: present
 
@@ -8,7 +8,9 @@
     src: "{{playbook_dir}}/files/kitty/"
     dest: "{{ansible_user_dir}}/.config/kitty"
     state: link
-    mode: "0644"
+    mode: "0755"
+    owner: "{{ default_user }}"
+    group: "{{ default_group }}"
     force: true
   when:
-    - dry_run == false
+  - dry_run == false

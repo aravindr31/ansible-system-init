@@ -1,0 +1,3 @@
+- name: Capture start time
+  set_fact:
+    start_time: "{{ ansible_date_time.epoch }}"

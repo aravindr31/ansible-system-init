@@ -43,6 +43,8 @@ alias dm="dmenu_run"
 alias tkw="tmux kill-window"
 alias tks="tmux kill-session"
 
+alias cat="bat"
+
 alias ovpn="sudo openvpn"
 
 alias w="nitrogen --set-zoom-fill --random $HOME/Media/Wallpapers"

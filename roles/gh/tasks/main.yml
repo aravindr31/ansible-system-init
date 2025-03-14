@@ -13,6 +13,6 @@
     src: "{{playbook_dir}}/files/gh/hosts.yml"
     path: "{{ ansible_user_dir }}/.config/gh/hosts.yml"
     owner: "{{ default_user }}"
-    group: "{{ default_user }}"
+    group: "{{ default_group }}"
     state: link
   when: dry_run == false

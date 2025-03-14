@@ -2,9 +2,9 @@
   copy:
     dest: "{{ playbook_dir }}/files/keys/ssh/{{ ssh_key_item.key }}"
     content: "{{ ssh_key_item.value }}"
-    mode: "0644"
+    mode: "0600"
     owner: "{{ default_user }}"
-    group: "{{ default_user }}"
+    group: "{{ default_group }}"
 
   no_log: true
   loop_control:
@@ -21,7 +21,7 @@
     src: "{{playbook_dir}}/files/keys/ssh"
     path: "{{ansible_user_dir}}/.ssh"
     owner: "{{ default_user }}"
-    group: "{{ default_user }}"
+    group: "{{ default_group }}"
     state: link
     force: true
   when: dry_run == false

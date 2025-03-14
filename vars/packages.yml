@@ -1,31 +1,40 @@
-general_packages:
+brew_packages:
 - lsd
 - zsh
 - git
-- ansible
-- nginx
 - htop
+- bat
+- superfile
+- gh
 - btop
 - vim
 - neovim
-- docker-compose
 - ranger
+- fontconfig
+- lazygit
+- podman
+- openssh
+- terraform
+- spaceship
+- docker-compose
+# - tor
+
+brew_cask_packages:
+- visual-studio-code
+- transmission
 - vlc
-- tor
-
-debain_packages:
+- whatsapp
+- cloudflare-warp
+- localsend
 - kitty
+- google-chrome
+- firefox
 - veracrypt
-- keepassxc
-
-redhat_packages:
-- kitty
-- veracrypt
-- keepassxc
-
-arch_packages:
-- kitty
-- yay
-- fakeroot
-- veracrypt
-- keepassxc
+- protonvpn
+- spotify
+- discord
+- telegram-desktop
+- rectangle
+- logi-options-plus
+- obsidian
+- google-drive

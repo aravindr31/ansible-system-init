@@ -1,5 +1,5 @@
 - name: Neovim | install neovim
-  package:
+  homebrew:
     name: neovim
     state: present
 

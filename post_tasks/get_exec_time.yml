@@ -1,0 +1,7 @@
+- name: Capture end time
+  set_fact:
+    end_time: "{{ ansible_date_time.epoch }}"
+
+- name: Calculate execution time
+  set_fact:
+    execution_time: "{{ end_time | int - start_time | int }}"

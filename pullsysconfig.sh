@@ -63,7 +63,6 @@ function vault_key_check() {
     done
 }
 
-
 # Initialize variables
 distro_name=""
 os_family=""
@@ -88,7 +87,6 @@ while getopts ":d:o:" opt; do
     esac
 done
 
-
 # Get OS Distribution type
 
 if [ -z "$os_family" ]; then
@@ -112,7 +110,7 @@ fi
 
 if ! [[ -d "$DOTFILES_DIR" ]]; then
     echo "Cloning System Config repository"
-    git clone --quiet https://github.com/aravindr31/Ansible-System-Setup.git $DOTFILES_DIR
+    git clone --quiet https://github.com/aravindr31/ansible-system-init.git $DOTFILES_DIR
 else
     echo "Updating Config repo"
     git -C $DOTFILES_DIR pull --quiet
@@ -126,7 +124,7 @@ vault_key_check
 
 ln -sf $DOTFILES_DIR/ansible.cfg $HOME/.ansible/ansible.cfg
 
-ansible-playbook main.yml -u $USER 
+ansible-playbook main.yml -u $USER
 
 popd
 

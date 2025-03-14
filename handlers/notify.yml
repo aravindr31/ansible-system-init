@@ -2,21 +2,23 @@
   community.general.discord:
     webhook_id: "{{discord_webhook.id}}"
     webhook_token: "{{discord_webhook.token}}"
+    username: "Ansible Bot"
+    avatar_url: "https://pbs.twimg.com/profile_images/1683941848618868737/4o9qlEj2_400x400.jpg"
     embeds:
-    - title: Ansible Notifier
-      description: "{{ 'System configuration failed' if ansible_failed is defined else 'System configuration is complete' }}"
+    - title: "✅ Ansible System Sync Completed"
+      description: "All configurations and updates have been successfully applied!"
+      color: 3066993
+      fields:
+      - name: "📅 Sync Timestamp"
+        value: "<t:{{ ansible_date_time.epoch }}:F>"
+        inline: true
+      - name: "🔄 Playbook"
+        value: "`ansible_system_init`"
+        inline: true
+      - name: "⚡ Execution Time"
+        value: "`{{ execution_time }}` seconds"
+        inline: true
       footer:
-        text: "Author: Ansible"
-      image:
-        url: "https://docs.ansible.com/ansible/latest/_static/images/logo_invert.png"
-    username: Ansible
-
-    # avatar_url: "https://docs.ansible.com/ansible/latest/_static/images/logo_invert.png"
-
-# - name: playbook_failed
-#   community.general.discord:
-#     webhook_id: "{{discord_webhook.id}}"
-#     webhook_token: "{{discord_webhook.token}}"
-#     content: "System configuration failed."
-#     username: Ansible
-#     avatar_url: "https://docs.ansible.com/ansible/latest/_static/images/logo_invert.png"
+        text: "Ansible Automation"
+        icon_url: "https://pbs.twimg.com/profile_images/1683941848618868737/4o9qlEj2_400x400.jpg"
+      timestamp: "{{ ansible_date_time.iso8601 }}"

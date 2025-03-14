@@ -1,3 +1,7 @@
+- name: PrintDefaultUser
+  debug:
+    msg: "{{ default_user }}"
+
 - name: Register Current User
   set_fact:
     default_user: "{{ ansible_env['USER']}}"

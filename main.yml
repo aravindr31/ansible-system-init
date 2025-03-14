@@ -1,8 +1,8 @@
-- name: "System Config"
+- name: "Ansible System Init"
   hosts: localhost
   connection: local
   become: false
-  
+
   vars_files:
   - vars/main.yml
   - vars/packages.yml
@@ -16,15 +16,13 @@
   - include_tasks:
       file: "{{item}}"
     loop:
-    - pre_tasks/ensure_folders.yml # checks and create nessecary folders before main task run
-    - pre_tasks/whoami.yml # check for current user if default user is empty or not defined
-    - pre_tasks/wsl_checks.yml # checks if the is running wsl or not
-    - pre_tasks/add_fonts.yml #checks and imports custom fonts
-
-  # roles from ansible-galaxy
-  roles:
-  - role: geerlingguy.docker
-    become: true
+    - pre_tasks/get_start_time.yml
+    - pre_tasks/ensure_folders.yml
+    - pre_tasks/whoami.yml
+    - pre_tasks/add_fonts.yml
+    # roles:
+    # - role: geerlingguy.docker
+    #   become: true
     # ignore_errors: true
 
   tasks:
@@ -34,14 +32,14 @@
       ignore_errors: true
       become: true
 
-      ## Uncomment the below task if the old dotfiles repo eed to be cloned
+    ## Uncomment the below task if the old dotfiles repo eed to be cloned
 
-      # - name: pull config repo
-      #   git:
-      #     repo: "{{ dotfile_git_repo }}"
-      #     dest: "{{ home_folder }}/repos/dotfiles_old/"
-      #     recursive: false
-      #     version: master
+    # - name: pull config repo
+    #   git:
+    #     repo: "{{ dotfile_git_repo }}"
+    #     dest: "{{ home_folder }}/repos/dotfiles_old/"
+    #     recursive: false
+    #     version: master
 
 
     - name: Set roles
@@ -66,24 +64,22 @@
       tags:
       - always
 
-    - name: source new config file
-      shell: |
-        source {{ansible_user_dir}}/.zshrc
-      tags:
-      - always
+  post_tasks:
+  - include_tasks:
+      file: "{{item}}"
+    loop:
+    - post_tasks/get_exec_time.yml
 
-    always:
-    - name: playbook_failed
-      debug:
-        msg: "playbook failed. - {{ansible_failed['msg']}}"
-      when: ansible_failed is defined
-      notify:
-      - ansible_notiffier
+  - name: check for playbook failure
+    debug:
+      msg: "playbook failed. - {{ansible_failed['msg']}}"
+    when: ansible_failed is defined
+    notify:
+    - ansible_notiffier
 
-    - name: playbook_succes
-      debug:
-        msg: "playbook success"
-      changed_when: true
-      notify: ansible_notifier
-      when: ansible_failed is not defined
-
+  - name: playbook_succes
+    debug:
+      msg: "playbook success"
+    changed_when: true
+    notify: ansible_notifier
+    when: ansible_failed is not defined

@@ -15,7 +15,3 @@
     dest: "{{ ansible_user_dir }}/.local/share/fonts/{{item | basename}}"
     state: link
   loop: "{{font_archives.files}}"
-
-- name: Refresh font cache
-  shell: |
-    fc-cache
