@@ -17,6 +17,7 @@ brew_packages:
 - terraform
 - spaceship
 - docker-compose
+- fzf
 # - tor
 
 brew_cask_packages:
@@ -38,3 +39,5 @@ brew_cask_packages:
 - logi-options-plus
 - obsidian
 - google-drive
+- virtualbox
+- nikitabobko/tap/aerospace

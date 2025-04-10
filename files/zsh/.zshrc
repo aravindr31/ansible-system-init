@@ -36,6 +36,10 @@ for file in $HOME/.config/bash/*.sh; do
     source "$file"
 done
 
+function ff {
+  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
+}
+
 # export function for azure keys
 
 function azconnect {

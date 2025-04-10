@@ -1,5 +1,6 @@
 local nvim_lsp = require('lspconfig')
-local servers = { 'tsserver','rome' }
+--local servers = { 'tsserver','rome' }
+local servers = {'rome' }
 
 local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end

@@ -10,7 +10,7 @@ default_roles:
 # - alacritty
 - kitty
 # - docker-compose
-# - gh
+- gh
 # - k8s
 # - nginx
 - nvim
