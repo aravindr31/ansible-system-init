@@ -99,9 +99,9 @@ nmap <C-d> :Telescope live_grep <CR>
 " background and colorscheme
 
 set background=dark
-colorscheme kanagawa
+colorscheme lucid
 
-let g:airline_theme='onehalfdark'
+let g:airline_theme='onedark'
 
 " let g:airline#extensions#tabline#enabled = 1
 

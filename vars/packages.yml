@@ -42,3 +42,4 @@ brew_cask_packages:
 - virtualbox
 - nikitabobko/tap/aerospace
 - raycast
+- wezterm

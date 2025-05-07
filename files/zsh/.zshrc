@@ -1,6 +1,6 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-source "$HOME/.config/bash/typewritten.zsh"
+#source "$HOME/.config/bash/typewritten.zsh"
 
 #ZSH_THEME="typewritten"
 #ZSH_THEME="af-magic"
@@ -72,5 +72,6 @@ function boot_windows() {
 }
 alias boot_win='boot_windows'
 
-#Spaceship config
-source /opt/homebrew/opt/spaceship/spaceship.zsh
+#Starship Config
+export STARSHIP_CONFIG=$HOME/.config/bash/starship.toml
+eval "$(starship init zsh)"
