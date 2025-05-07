@@ -5,7 +5,7 @@
 
 format = """
 $directory\
-$character"""
+$character """
 
 right_format = """
 $git_branch\
@@ -42,9 +42,9 @@ read_only = " "
 truncation_length = 3
 truncate_to_repo = false
 truncation_symbol = ".../"
-style = "yellow"
+#style = "yellow"
 
 [character]
-success_symbol = "[ ](green)"
-error_symbol = "[ ](red)"
-vicmd_symbol = "[ ](purple)"
+success_symbol = "[](bold green)"
+error_symbol = "[](bold red)"
+vicmd_symbol = "[]((bold purple)"

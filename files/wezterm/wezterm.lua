@@ -8,7 +8,7 @@ config = {
     window_close_confirmation = "NeverPrompt",
     window_decorations = "RESIZE",
     default_cursor_style = "BlinkingBar",
-    color_scheme = 'Gruvbox dark, medium (base16)',
+    color_scheme = 'OneDark (base16)',
     font = wezterm.font("JetBrains Mono",{weight = "Bold"}),
     font_size = 13,
     window_padding = {
