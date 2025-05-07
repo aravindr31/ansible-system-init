@@ -56,3 +56,4 @@ alias tmux="tmux -u"
 alias tsm="transmission-remote"
 
 alias asconfig="nvim  $HOME/repos/ansible-system-init/files/aerospace/aerospace.toml"
+alias syscon="nvim  $HOME/repos/ansible-system-init/"
