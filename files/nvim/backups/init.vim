@@ -1,4 +1,3 @@
-set termguicolors
 set tabstop=2 
 set softtabstop=4
 set shiftwidth=2
@@ -26,6 +25,7 @@ set updatetime=250
 set encoding=UTF-8
 set mouse=a
 "set spell
+" set termguicolors " Turning off for pywal16
 
 " Install vim-plug if not found
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -44,15 +44,13 @@ call plug#begin('$HOME/.config/nvim/plugged')
 Plug 'tpope/vim-surround' " Surrounding ()
 Plug 'ap/vim-css-color' " CSS Color Preview
 Plug 'rafi/awesome-vim-colorschemes' " Retro Scheme
-Plug 'ryanoasis/vim-devicons' " Developer Icons
 Plug 'tc50cal/vim-terminal' " Vim Terminal
-Plug 'vim-airline/vim-airline' " Status bar
 Plug 'neovim/nvim-lspconfig' "neovim lsp
 Plug 'mbbill/undotree' " undotree
 Plug 'nvim-lua/plenary.nvim' 
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' } " Color scheme
-Plug 'preservim/nerdtree' "Nerd Tree
+" Plug 'preservim/nerdtree' "Nerd Tree
 Plug 'ctrlpvim/ctrlp.vim' "CtrlP
 Plug 'preservim/nerdcommenter' "commenter
 Plug 'neoclide/coc.nvim', {'branch': 'release'} "coc nvim
@@ -67,7 +65,10 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'kdheepak/lazygit.nvim'
 Plug 'junegunn/fzf.vim'
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
-"Plug 'nvimdev/dashboard-nvim'
+Plug 'uZer/pywal16.nvim', { 'as': 'pywal16' }
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
 
 call plug#end()
 
@@ -78,7 +79,7 @@ lua require('lua_files')
 
 "custom keybinds
 nmap <C-z> :UndotreeToggle<CR>
-nmap <C-b> :NERDTreeToggle<CR>
+nmap <C-b> :NvimTreeToggle<CR>
 nmap <C-p> :CtrlP<CR>
 
 vmap // <plug>NERDCommenterToggle
@@ -98,10 +99,12 @@ nmap <C-d> :Telescope live_grep <CR>
 
 " background and colorscheme
 
-set background=dark
-colorscheme lucid
+" set background=dark
 
-let g:airline_theme='onedark'
+" colorscheme wal
+
+" let g:airline_theme='pywal16'
+
 
 " let g:airline#extensions#tabline#enabled = 1
 
