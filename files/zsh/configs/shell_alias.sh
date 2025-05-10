@@ -57,3 +57,26 @@ alias tsm="transmission-remote"
 
 alias asconfig="nvim  $HOME/repos/ansible-system-init/files/aerospace/aerospace.toml"
 alias syscon="nvim  $HOME/repos/ansible-system-init/"
+
+
+function ff {
+  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
+}
+
+
+function azc {
+    if [[ -f "$HOME/keys/Az-terraform.sh" ]]; then
+        source $HOME/keys/Az-terraform.sh && connect-azure-terraform
+    else
+        echo "Azure Key file not found"
+    fi
+}
+
+function boot_win {
+    windows_title=$(sudo grep -i windows /boot/grub/grub.cfg | cut -d "'" -f 2)
+    sudo grub-reboot "$windows_title" && sudo reboot
+}
+
+function sc {
+  ls repos/ansible-system-init/files | fzf --bind 'enter:execute(bash -c "nvim $HOME/repos/ansible-system-init/files/{1}")+abort'
+}
