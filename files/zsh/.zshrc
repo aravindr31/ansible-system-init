@@ -47,6 +47,9 @@ bindkey "^J" history-search-forward
 bindkey "^K" history-search-backward
 bindkey '^R' fzf-history-widget
 
+#zoxide
+eval "$(zoxide init zsh)"
+
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -77,6 +80,7 @@ if [[ -f "$NVM_DIR/nvm.sh" ]]; then
 fi
 
 export PATH="$PATH:/Users/aravind/.local/bin"
+export LS_COLORS="$HOME/.cache/wal/colors.sh"
 
 #Starship Config
 export STARSHIP_CONFIG=$HOME/.config/bash/starship.toml

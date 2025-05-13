@@ -2,12 +2,11 @@ alias nv="nvim"
 alias zshrc="nvim $HOME/.zshrc"
 alias ohmyzsh="thunar $HOME/.oh-my-zsh"
 alias bashrc="nvim $HOME/.bashrc"
-alias zshconfig="nvim $HOME/.zshrc"
 alias ohmyzsh="nvim $HOME/.oh-my-zsh"
 alias awrc="nvim $HOME/.config/awesome/rc.lua"
 alias bashrc="nvim $HOME/.bashrc"
 alias nvimrc="nvim $HOME/.config/nvim"
-alias szshrc="source $HOME/.zshrc"
+alias sz="source $HOME/.zshrc"
 
 alias cls="clear"
 alias ls="lsd"
@@ -55,6 +54,8 @@ alias top="btop --utf-force"
 alias tmux="tmux -u"
 alias tsm="transmission-remote"
 
+alias w="wal -q -i $HOME/Pictures/Wallpapers"
+
 alias asconfig="nvim  $HOME/repos/ansible-system-init/files/aerospace/aerospace.toml"
 alias syscon="nvim  $HOME/repos/ansible-system-init/"
 
@@ -78,5 +79,9 @@ function boot_win {
 }
 
 function sc {
-  ls repos/ansible-system-init/files | fzf --bind 'enter:execute(bash -c "nvim $HOME/repos/ansible-system-init/files/{1}")+abort'
+  ls $HOME/repos/ansible-system-init/files | fzf --bind 'enter:execute(bash -c "nvim $HOME/repos/ansible-system-init/files/{1}")+abort'
+}
+
+function bsi {
+  brew search $1 | fzf --bind 'enter:execute(echo {1} && brew info {1} | grep -q /Casks/ && brew install --cask {1} || brew install {1})+abort'
 }
