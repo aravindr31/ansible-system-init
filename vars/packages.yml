@@ -43,3 +43,4 @@ brew_cask_packages:
 - nikitabobko/tap/aerospace
 - raycast
 - wezterm
+- monitorcontrol

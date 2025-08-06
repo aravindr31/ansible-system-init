@@ -116,8 +116,9 @@ outer.right =      10
     alt-f = 'exec-and-forget open -a /System/Library/CoreServices/Finder.app'
     alt-m = 'exec-and-forget open -a /Applications/Spotify.app'
     alt-enter = 'exec-and-forget open -n /Applications/WezTerm.app'
-    alt-shift-enter = 'exec-and-forget open -a /Applications/WezTerm'
-  
+    alt-shift-enter = 'exec-and-forget open -a /Applications/WezTerm' 
+    alt-shift-w = 'exec-and-forget open -a /Application/Firefox.app --private-window'
+    
     alt-q = 'close --quit-if-last-window'
 
     [workspace-to-monitor-force-assignment]

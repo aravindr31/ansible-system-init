@@ -12,6 +12,7 @@ $git_branch\
 $git_state\
 $git_status\
 $git_metrics\
+$python\
 $nodejs\
 $jobs"""
 
