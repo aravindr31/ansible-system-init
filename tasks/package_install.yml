@@ -2,17 +2,39 @@
 # ==============================================================================
 # Homebrew Setup & Verification
 # ==============================================================================
-- name: Check if Homebrew is installed
-  ansible.builtin.command: which brew
-  register: homebrew_check
-  failed_when: false
-  changed_when: false
+- name: Check for Homebrew binary on system
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop:
+    - /opt/homebrew/bin/brew
+    - /usr/local/bin/brew
+  register: brew_binary_check
   tags:
     - always
 
-- name: Install Homebrew if not present
+- name: Determine if Homebrew is already installed
+  ansible.builtin.set_fact:
+    brew_installed: "{{ (brew_binary_check.results | selectattr('stat.exists') | list | length) > 0 }}"
+  tags:
+    - always
+
+- name: Install Homebrew automatically if not present
   ansible.builtin.shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  when: homebrew_check.rc != 0
+  environment:
+    NONINTERACTIVE: "1"
+  when: not brew_installed
+  tags:
+    - packages
+    - install
+    - brew
+
+- name: Persist Homebrew shellenv in ~/.zprofile
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_user_dir }}/.zprofile"
+    line: 'eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv 2>/dev/null)"'
+    create: true
+    mode: "0644"
+  when: not brew_installed
   tags:
     - packages
     - install
