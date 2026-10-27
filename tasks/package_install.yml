@@ -1,44 +1,129 @@
-- block:
-  - name: package install
-    package:
-      name: "{{ item }}"
-      state: present
-    loop: "{{ general_packages }}"
+---
+# ==============================================================================
+# Debian / Ubuntu Package Management (apt)
+# ==============================================================================
+- name: Debian / Ubuntu Package Installation
+  when: ansible_os_family == 'Debian'
+  tags:
+    - packages
+    - install
+  block:
+    - name: Update apt package cache
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+      become: true
 
-    when: general_packages is defined
+    - name: Install common & Debian packages
+      apt:
+        name: "{{ (general_packages | default([])) + (debian_packages | default([])) }}"
+        state: present
+      become: true
+      when: ((general_packages | default([])) + (debian_packages | default([]))) | length > 0
 
-  - name: Install Debian-specific packages
-    apt:
-      name: "{{ item }}"
-      state: present
-    loop: "{{ debain_packages }}"
-
-    when:
-    - ansible_distribution in ['Debian', 'Ubuntu']
-    - debain_packages is defined
-    - ansible_host_environment_is_wsl is false
-
-  - name: Install RedHat-specific packages
-    dnf:
-      name: "{{ item }}"
-      state: present
-    loop: "{{ redhat_packages }}"
-
-    when:
-    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
-    - redhat_packages is defined
-    - ansible_host_environment_is_wsl is false
-
-
-  - name: Install Arch-specific packages
-    pacman:
-      name: "{{ item }}"
-      state: present
-    loop: "{{ arch_packages }}"
-
-    when:
-    - ansible_distribution in ['Archlinux', 'Manjaro']
-    - arch_packages is defined
-    - ansible_host_environment_is_wsl is false
+- name: Debian / Ubuntu Package Uninstallation
+  when:
+    - ansible_os_family == 'Debian'
+    - ((general_packages_absent | default([])) + (debian_packages_absent | default([]))) | length > 0
+  tags:
+    - packages
+    - uninstall
+  apt:
+    name: "{{ (general_packages_absent | default([])) + (debian_packages_absent | default([])) }}"
+    state: absent
   become: true
-  
+
+- name: Debian / Ubuntu Package Cleanup
+  when:
+    - ansible_os_family == 'Debian'
+    - run_package_cleanup | default(false) or ('cleanup' in ansible_run_tags)
+  tags:
+    - cleanup
+    - packages:cleanup
+  apt:
+    autoremove: true
+    autoclean: true
+  become: true
+
+# ==============================================================================
+# Arch Linux / Manjaro Package Management (pacman)
+# ==============================================================================
+- name: Arch Linux Package Installation
+  when: ansible_os_family == 'Archlinux'
+  tags:
+    - packages
+    - install
+  block:
+    - name: Refresh pacman database
+      pacman:
+        update_cache: true
+      become: true
+
+    - name: Install common & Arch packages
+      pacman:
+        name: "{{ (general_packages | default([])) + (arch_packages | default([])) }}"
+        state: present
+      become: true
+      when: ((general_packages | default([])) + (arch_packages | default([]))) | length > 0
+
+- name: Arch Linux Package Uninstallation
+  when:
+    - ansible_os_family == 'Archlinux'
+    - ((general_packages_absent | default([])) + (arch_packages_absent | default([]))) | length > 0
+  tags:
+    - packages
+    - uninstall
+  pacman:
+    name: "{{ (general_packages_absent | default([])) + (arch_packages_absent | default([])) }}"
+    state: absent
+  become: true
+
+- name: Arch Linux Package Cache Cleanup
+  when:
+    - ansible_os_family == 'Archlinux'
+    - run_package_cleanup | default(false) or ('cleanup' in ansible_run_tags)
+  tags:
+    - cleanup
+    - packages:cleanup
+  pacman:
+    clean_cache: all
+  become: true
+
+# ==============================================================================
+# Fedora / RedHat / CentOS Package Management (dnf)
+# ==============================================================================
+- name: Fedora / RedHat Package Installation
+  when: ansible_os_family == 'RedHat'
+  tags:
+    - packages
+    - install
+  block:
+    - name: Install common & Fedora/RedHat packages
+      dnf:
+        name: "{{ (general_packages | default([])) + (redhat_packages | default([])) }}"
+        state: present
+      become: true
+      when: ((general_packages | default([])) + (redhat_packages | default([]))) | length > 0
+
+- name: Fedora / RedHat Package Uninstallation
+  when:
+    - ansible_os_family == 'RedHat'
+    - ((general_packages_absent | default([])) + (redhat_packages_absent | default([]))) | length > 0
+  tags:
+    - packages
+    - uninstall
+  dnf:
+    name: "{{ (general_packages_absent | default([])) + (redhat_packages_absent | default([])) }}"
+    state: absent
+  become: true
+
+- name: Fedora / RedHat Package Cleanup
+  when:
+    - ansible_os_family == 'RedHat'
+    - run_package_cleanup | default(false) or ('cleanup' in ansible_run_tags)
+  tags:
+    - cleanup
+    - packages:cleanup
+  dnf:
+    autoremove: true
+  become: true

@@ -1,31 +1,60 @@
+---
+# ==============================================================================
+# Linux Common Packages (Installed on Debian, Ubuntu, Arch, and Fedora)
+# ==============================================================================
 general_packages:
-- lsd
-- zsh
-- git
-- ansible
-- nginx
-- htop
-- btop
-- vim
-- neovim
-- docker-compose
-- ranger
-- vlc
-- tor
+  - git
+  - zsh
+  - vim
+  - neovim
+  - tmux
+  - htop
+  - btop
+  - curl
+  - wget
+  - ranger
+  - fzf
+  - vlc
+  # - tor
 
-debain_packages:
-- kitty
-- veracrypt
-- keepassxc
+# ==============================================================================
+# Debian / Ubuntu Specific Packages (ansible_os_family == 'Debian')
+# ==============================================================================
+debian_packages:
+  - build-essential
+  - kitty
+  - keepassxc
+  - docker-compose-v2
 
-redhat_packages:
-- kitty
-- veracrypt
-- keepassxc
-
+# ==============================================================================
+# Arch Linux / Manjaro Specific Packages (ansible_os_family == 'Archlinux')
+# ==============================================================================
 arch_packages:
-- kitty
-- yay
-- fakeroot
-- veracrypt
-- keepassxc
+  - base-devel
+  - fakeroot
+  - kitty
+  - keepassxc
+  - docker-compose
+  - lsd
+
+# ==============================================================================
+# Fedora / RedHat Specific Packages (ansible_os_family == 'RedHat')
+# ==============================================================================
+redhat_packages:
+  - gcc
+  - make
+  - kitty
+  - keepassxc
+  - docker-compose
+  - lsd
+
+# ==============================================================================
+# Uninstallation Lists (Managed with --tags uninstall)
+# ==============================================================================
+general_packages_absent: []
+debian_packages_absent: []
+arch_packages_absent: []
+redhat_packages_absent: []
+
+# Run system autoremove & cache clean during cleanup runs
+run_package_cleanup: false
