@@ -1,17 +1,22 @@
-- name: ensure fonts directory
-  file:
-    path: "{{ansible_user_dir}}/.local/share/fonts"
+---
+- name: Ensure macOS fonts directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/Library/Fonts"
     state: directory
+    mode: '0755'
 
-- name: Get Archived files names
-  find:
-    path: "{{ansible_env.PWD}}/files/fonts/"
+- name: Find font files in repository
+  ansible.builtin.find:
+    path: "{{ playbook_dir }}/files/fonts/"
     file_type: file
-  register: font_archives
+    recurse: true
+  register: font_files
 
-- name: Link font folders
-  file:
-    src: "{{item.path}}"
-    dest: "{{ ansible_user_dir }}/.local/share/fonts/{{item | basename}}"
+- name: Symlink fonts to macOS Library/Fonts
+  ansible.builtin.file:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_user_dir }}/Library/Fonts/{{ item.path | basename }}"
     state: link
-  loop: "{{font_archives.files}}"
+  loop: "{{ font_files.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
