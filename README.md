@@ -162,3 +162,4 @@ To allow the CI syntax checker to validate the encrypted `vars/vault.yml` agains
 4. Value: Paste your vault password.
 
 *(If omitted, CI automatically stubs non-sensitive fields so the syntax check still succeeds without errors).*
+

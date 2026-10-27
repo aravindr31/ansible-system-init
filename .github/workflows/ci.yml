@@ -110,3 +110,4 @@ jobs:
 
             mv vars/vault.yml.bak vars/vault.yml
           fi
+

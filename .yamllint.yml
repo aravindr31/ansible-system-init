@@ -17,3 +17,4 @@ ignore:
   - "vars/vault.yml"
   - "files/alacritty/colors.yml"
   - "files/alacritty/colors.ymlbak"
+
