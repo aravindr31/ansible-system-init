@@ -7,6 +7,7 @@ Automated, declarative workstation provisioning and dotfiles management for macO
 ## 📋 Features
 
 - 🍏 **macOS Native**: Full compatibility with Apple Silicon (`/opt/homebrew`) and Intel (`/usr/local/bin`).
+- 🍺 **Auto-Bootstrapped Homebrew**: If Homebrew is not installed on the target Mac, the playbook automatically installs it non-interactively (`NONINTERACTIVE=1`), configures its shell environment in `~/.zprofile`, and injects it into the active execution session.
 - 📦 **Declarative Package Management**:
   - Formulae & GUI Casks managed via Homebrew.
   - **On-Demand Auto-Prune** (`--tags prune`): Automatically removes packages deleted from your configuration.
@@ -24,22 +25,21 @@ Automated, declarative workstation provisioning and dotfiles management for macO
 
 ## 🚀 Prerequisites
 
-### 1. Install Command Line Tools & Homebrew
-If setting up a fresh Mac:
+### 1. Minimal Initial Setup
+On a brand new Mac, you only need Xcode Command Line Tools and Ansible:
 ```bash
 # 1. Install Xcode Command Line Tools
 xcode-select --install
 
-# 2. Install Homebrew (if not already installed)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# 3. Add Homebrew to PATH (Apple Silicon)
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-# 4. Install Ansible
+# 2. Install Ansible (via Homebrew if installed, or via python3 pip)
+# If Homebrew is already installed:
 brew install ansible
+
+# If starting completely fresh without Homebrew:
+python3 -m pip install --user ansible
 ```
+> [!NOTE]
+> **Homebrew is automatically installed by the playbook**: If Homebrew is not already installed on your Mac, the playbook will automatically download, install, and configure Homebrew (for Apple Silicon or Intel) during its initial package run.
 
 ### 2. Configure Ansible Vault Password
 The playbook expects your vault password to reside outside the repository as defined in [`ansible.cfg`](./ansible.cfg):
