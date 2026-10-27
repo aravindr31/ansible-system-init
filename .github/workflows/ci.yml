@@ -1,6 +1,6 @@
 name: "CI & Security Checks"
 
-on:
+'on':
   push:
     branches:
       - mac-master
