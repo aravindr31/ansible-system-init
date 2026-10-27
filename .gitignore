@@ -1,6 +1,17 @@
-keys
-vault.yml
-tmp
-test
+# Keys and credentials
+keys/
+files/keys/
+.vault_password
+*.vault_pass
+*.vault_key
+.env
+
+# Temporary files
+tmp/
+test/
+
+# Generated files / local plugins / undo cache
 files/zsh/configs/az_terraform.sh
-files/nvim/plugged
+files/nvim/plugged/
+files/nvim/undodir/
+.DS_Store
