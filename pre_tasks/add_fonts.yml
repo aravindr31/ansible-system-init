@@ -1,21 +1,28 @@
-- name: ensure fonts directory
+---
+- name: Ensure Linux user fonts directory exists
   file:
-    path: "{{ansible_user_dir}}/.local/share/fonts"
+    path: "{{ ansible_user_dir }}/.local/share/fonts"
     state: directory
+    mode: "0755"
 
-- name: Get Archived files names
+- name: Find custom font files in repository
   find:
-    path: "{{ansible_env.PWD}}/files/fonts/"
+    path: "{{ playbook_dir }}/files/fonts/"
     file_type: file
-  register: font_archives
+    recurse: true
+  register: font_files
 
-- name: Link font folders
+- name: Symlink fonts to ~/.local/share/fonts
   file:
-    src: "{{item.path}}"
-    dest: "{{ ansible_user_dir }}/.local/share/fonts/{{item | basename}}"
+    src: "{{ item.path }}"
+    dest: "{{ ansible_user_dir }}/.local/share/fonts/{{ item.path | basename }}"
     state: link
-  loop: "{{font_archives.files}}"
+  loop: "{{ font_files.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
 
 - name: Refresh font cache
   shell: |
-    fc-cache
+    fc-cache -f
+  changed_when: false
+  when: not (ansible_host_environment_is_wsl | default(false) | bool)
