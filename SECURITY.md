@@ -42,3 +42,4 @@ If you discover a security vulnerability or accidental credential exposure in th
 2. Report the vulnerability privately via **GitHub Private Vulnerability Reporting** on the repository's **Security** tab, or email the maintainer directly at `aravindr597@gmail.com`.
 3. Include detailed steps to reproduce the issue and any relevant context.
 4. Vulnerabilities will be acknowledged within 48 hours and resolved promptly.
+

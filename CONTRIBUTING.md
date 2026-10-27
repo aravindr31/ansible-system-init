@@ -88,3 +88,4 @@ feat(packages): add ripgrep and fd-find to brew packages
 2. Open a Pull Request targeting the **`mac-master`** branch.
 3. Verify that all automated GitHub Actions checks (Gitleaks, YAML lint, Ansible syntax check) pass successfully.
 4. Describe the changes and the motivation behind them in your PR description.
+
