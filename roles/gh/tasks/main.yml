@@ -1,18 +1,17 @@
-- name: Github Cli | install Github Cli
-  package:
-    name: github-cli
-    state: present
-
-- name: Github Cli | copy host.yml file
-  template:
-    src: "{{playbook_dir}}/templates/gh/hosts.j2"
-    dest: "{{playbook_dir}}/files/gh/hosts.yml"
-
-- name: Github Cli | link config file to home folder
+---
+- name: Ensure ~/.config/gh directory exists
   file:
-    src: "{{playbook_dir}}/files/gh/hosts.yml"
-    path: "{{ ansible_user_dir }}/.config/gh/hosts.yml"
+    path: "{{ ansible_user_dir }}/.config/gh"
+    state: directory
+    mode: "0700"
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
-    state: link
-  when: dry_run == false
+
+- name: Deploy GitHub CLI hosts.yml config
+  template:
+    src: "{{ playbook_dir }}/templates/gh/hosts.j2"
+    dest: "{{ ansible_user_dir }}/.config/gh/hosts.yml"
+    mode: "0600"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+  when: not (dry_run | default(false))

@@ -1,27 +1,31 @@
-- name: "SSH | Copy SSH keys"
-  copy:
-    dest: "{{ playbook_dir }}/files/keys/ssh/{{ ssh_key_item.key }}"
-    content: "{{ ssh_key_item.value }}"
-    mode: "0644"
+---
+- name: Ensure ~/.ssh directory exists with secure permissions
+  file:
+    path: "{{ ansible_user_dir }}/.ssh"
+    state: directory
+    mode: "0700"
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
 
+- name: Install SSH keys directly to ~/.ssh
+  copy:
+    dest: "{{ ansible_user_dir }}/.ssh/{{ ssh_key_item.key }}"
+    content: "{{ ssh_key_item.value }}"
+    mode: "{{ '0644' if ssh_key_item.key.endswith('.pub') else '0600' }}"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
   no_log: true
+  loop: "{{ ssh_key | default({}) | dict2items }}"
   loop_control:
     loop_var: ssh_key_item
-  with_items: "{{ ssh_key | default({}) | dict2items }}"
+    label: "{{ ssh_key_item.key }}"
+  when: not (dry_run | default(false))
 
-- name: SSH | Copy ssh config
+- name: Deploy SSH config
   template:
-    dest: "{{playbook_dir}}/files/keys/ssh/config"
-    src: "{{playbook_dir}}/templates/ssh/ssh_config.j2"
+    src: "{{ playbook_dir }}/templates/ssh/ssh_config.j2"
+    dest: "{{ ansible_user_dir }}/.ssh/config"
     mode: "0644"
-- name: SSH | create symlink
-  file:
-    src: "{{playbook_dir}}/files/keys/ssh"
-    path: "{{ansible_user_dir}}/.ssh"
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
-    state: link
-    force: true
-  when: dry_run == false
+  when: not (dry_run | default(false))
