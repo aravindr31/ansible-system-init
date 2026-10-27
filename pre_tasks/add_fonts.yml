@@ -1,19 +1,19 @@
 ---
 - name: Ensure macOS fonts directory exists
-  ansible.builtin.file:
+  file:
     path: "{{ ansible_user_dir }}/Library/Fonts"
     state: directory
     mode: '0755'
 
 - name: Find font files in repository
-  ansible.builtin.find:
+  find:
     path: "{{ playbook_dir }}/files/fonts/"
     file_type: file
     recurse: true
   register: font_files
 
 - name: Symlink fonts to macOS Library/Fonts
-  ansible.builtin.file:
+  file:
     src: "{{ item.path }}"
     dest: "{{ ansible_user_dir }}/Library/Fonts/{{ item.path | basename }}"
     state: link

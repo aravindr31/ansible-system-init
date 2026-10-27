@@ -1,21 +1,21 @@
 ---
 - name: NVM | Determine latest release tag
-  ansible.builtin.uri:
+  uri:
     url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
     return_content: true
   register: nvm_latest_release
   when: (nvm_version | default('latest')) == 'latest'
 
 - name: NVM | Set target version
-  ansible.builtin.set_fact:
+  set_fact:
     target_nvm_version: "{{ nvm_latest_release.json.tag_name if ((nvm_version | default('latest')) == 'latest') else nvm_version }}"
 
 - name: NVM | Display resolved version
-  ansible.builtin.debug:
+  debug:
     msg: "Installing/updating NVM version {{ target_nvm_version }}"
 
 - name: NVM | Clone or update NVM repository
-  ansible.builtin.git:
+  git:
     repo: "https://github.com/nvm-sh/nvm.git"
     dest: "{{ ansible_user_dir }}/.nvm"
     version: "{{ target_nvm_version }}"

@@ -1,5 +1,5 @@
 - name: ansible_notifier
-  community.general.discord:
+  discord:
     webhook_id: "{{discord_webhook.id}}"
     webhook_token: "{{discord_webhook.token}}"
     username: "Ansible Bot"

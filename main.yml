@@ -5,83 +5,87 @@
   become: false
   gather_facts: true
   gather_subset:
-    - '!all'
-    - 'min'
-    - 'env'
+  - '!all'
+  - 'min'
+  - 'env'
+
+  collections:
+    - ansible.builtin
+    - community.general
 
   environment:
     PATH: "/opt/homebrew/bin:/usr/local/bin:{{ ansible_env.PATH }}"
 
   vars_files:
-    - vars/main.yml
-    - vars/packages.yml
-    - vars/vault.yml
+  - vars/main.yml
+  - vars/packages.yml
+  - vars/vault.yml
 
   handlers:
-    - name: Import handlers
-      ansible.builtin.import_tasks: handlers/notify.yml
+  - name: Import handlers
+    import_tasks: handlers/notify.yml
 
   pre_tasks:
-    - name: Record start time
-      ansible.builtin.include_tasks: pre_tasks/get_start_time.yml
-      tags: [always]
+  - name: Record start time
+    include_tasks: pre_tasks/get_start_time.yml
+    tags: [ always ]
 
-    - name: Ensure required folders exist
-      ansible.builtin.include_tasks: pre_tasks/ensure_folders.yml
-      tags: [always]
+  - name: Ensure required folders exist
+    include_tasks: pre_tasks/ensure_folders.yml
+    tags: [ always ]
 
-    - name: Verify user environment
-      ansible.builtin.include_tasks: pre_tasks/whoami.yml
-      tags: [always]
+  - name: Verify user environment
+    include_tasks: pre_tasks/whoami.yml
+    tags: [ always ]
 
-    - name: Deploy macOS fonts
-      ansible.builtin.include_tasks: pre_tasks/add_fonts.yml
-      tags: [fonts]
+  - name: Deploy macOS fonts
+    include_tasks: pre_tasks/add_fonts.yml
+    tags: [ fonts ]
 
   tasks:
-    - name: Package and application management
-      ansible.builtin.import_tasks: tasks/package_install.yml
-      tags:
-        - packages
-        - install
-        - uninstall
-        - prune
-        - cleanup
-        - brew
+  - name: Package and application management
+    import_tasks: tasks/package_install.yml
+    tags:
+    - packages
+    - install
+    - uninstall
+    - prune
+    - cleanup
+    - brew
 
-    - name: Configure roles to run
-      block:
-        - name: Determine active roles
-          ansible.builtin.set_fact:
-            run_roles: "{{ default_roles | difference(exclude_roles | default([])) }}"
+  - name: Configure roles to run
+    block:
+    - name: Determine active roles
+      set_fact:
+        run_roles: "{{ default_roles | difference(exclude_roles | default([])) }}"
 
-        - name: Display roles to be applied
-          ansible.builtin.debug:
-            var: run_roles
+    - name: Display roles to be applied
+      debug:
+        var: run_roles
 
-        - name: Apply configured roles
-          ansible.builtin.include_role:
-            name: "{{ item }}"
-            apply:
-              tags:
-                - "{{ item }}"
-                - roles
-          loop: "{{ run_roles }}"
-          loop_control:
-            label: "{{ item }}"
-      tags:
-        - roles
-        - dotfiles
-        - config
+    - name: Apply configured roles
+      include_role:
+        name: "{{ item }}"
+        apply:
+          tags:
+          - "{{ item }}"
+          - roles
+      loop: "{{ run_roles }}"
+      loop_control:
+        label: "{{ item }}"
+    tags:
+    - roles
+    - dotfiles
+    - config
 
   post_tasks:
-    - name: Calculate execution time
-      ansible.builtin.include_tasks: post_tasks/get_exec_time.yml
-      tags: [always]
+  - name: Calculate execution time
+    include_tasks: post_tasks/get_exec_time.yml
+    tags: [ always ]
 
-    - name: Report playbook success
-      ansible.builtin.debug:
-        msg: "Playbook completed in {{ execution_time | default('N/A') }} seconds."
-      changed_when: true
-      notify: ansible_notifier
-      tags: [always]
+  - name: Report playbook success
+    debug:
+      msg: "Playbook completed in {{ execution_time | default('N/A') }} seconds."
+    changed_when: true
+    notify: ansible_notifier
+    tags: [ always ]

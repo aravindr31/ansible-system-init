@@ -1,6 +1,6 @@
 ---
 - name: ZSH | Ensure Oh-My-Zsh is installed
-  ansible.builtin.git:
+  git:
     repo: "https://github.com/ohmyzsh/ohmyzsh.git"
     dest: "{{ ansible_user_dir }}/.oh-my-zsh"
     depth: 1
@@ -9,22 +9,22 @@
 
 - name: ZSH | Deploy custom shell configuration files
   block:
-    - name: ZSH | generate azure terraform connector
-      ansible.builtin.template:
-        src: "{{ playbook_dir }}/templates/zsh/configs/az_terraform.j2"
-        dest: "{{ playbook_dir }}/files/zsh/configs/az_terraform.sh"
-        mode: "0755"
+  - name: ZSH | generate azure terraform connector
+    template:
+      src: "{{ playbook_dir }}/templates/zsh/configs/az_terraform.j2"
+      dest: "{{ playbook_dir }}/files/zsh/configs/az_terraform.sh"
+      mode: "0755"
 
-    - name: ZSH | link custom configs to .config/bash
-      ansible.builtin.file:
-        src: "{{ playbook_dir }}/files/zsh/configs"
-        dest: "{{ ansible_user_dir }}/.config/bash"
-        state: link
+  - name: ZSH | link custom configs to .config/bash
+    file:
+      src: "{{ playbook_dir }}/files/zsh/configs"
+      dest: "{{ ansible_user_dir }}/.config/bash"
+      state: link
 
-    - name: ZSH | link custom .zshrc to home directory
-      ansible.builtin.file:
-        src: "{{ playbook_dir }}/files/zsh/.zshrc"
-        dest: "{{ ansible_user_dir }}/.zshrc"
-        state: link
-        force: true
+  - name: ZSH | link custom .zshrc to home directory
+    file:
+      src: "{{ playbook_dir }}/files/zsh/.zshrc"
+      dest: "{{ ansible_user_dir }}/.zshrc"
+      state: link
+      force: true
   when: not (dry_run | default(false))
