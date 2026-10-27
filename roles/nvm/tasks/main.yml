@@ -1,25 +1,23 @@
-- name: NVM | Get NVM insall script
-  uri:
-    url: "{{ nvm_install_script_url }}"
-    method: GET
-    follow_redirects: safe
-    body_format: raw
+---
+- name: NVM | Determine latest release tag
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
     return_content: true
-  register: nvm_install
+  register: nvm_latest_release
+  when: (nvm_version | default('latest')) == 'latest'
 
-- name: NVM | Save install.sh
-  copy:
-    content: "{{nvm_install.content }}"
-    dest: "{{playbook_dir}}/tmp/nvm_install.sh"
-    mode: "0744"
+- name: NVM | Set target version
+  ansible.builtin.set_fact:
+    target_nvm_version: "{{ nvm_latest_release.json.tag_name if ((nvm_version | default('latest')) == 'latest') else nvm_version }}"
 
-- name: NVM | Execute Install script
-  shell: |
-    "{{ playbook_dir }}/tmp/nvm_install.sh"
-  when: dry_run == false
+- name: NVM | Display resolved version
+  ansible.builtin.debug:
+    msg: "Installing/updating NVM version {{ target_nvm_version }}"
 
-- name: NVM | Remove tmp install file
-  file:
-    path: "{{playbook_dir}}/tmp/nvm_install.sh"
-    state: absent
-  tags: always
+- name: NVM | Clone or update NVM repository
+  ansible.builtin.git:
+    repo: "https://github.com/nvm-sh/nvm.git"
+    dest: "{{ ansible_user_dir }}/.nvm"
+    version: "{{ target_nvm_version }}"
+    depth: 1
+  when: not (dry_run | default(false))
