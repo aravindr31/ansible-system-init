@@ -44,6 +44,8 @@ alias cat="bat"
 
 alias ovpn="sudo openvpn"
 
+alias docker="podman"
+
 alias w="nitrogen --set-zoom-fill --random $HOME/Media/Wallpapers"
 
 alias rcsyn="rclone sync -P pcloud: $HOME/RClone"

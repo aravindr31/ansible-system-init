@@ -79,7 +79,7 @@ if [[ -f "$NVM_DIR/nvm.sh" ]]; then
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 fi
 
-export PATH="$PATH:/Users/aravind/.local/bin:$HOME/.cargo/bin"
+export PATH="$PATH:/Users/aravind/.local/bin:$HOME/.cargo/bin:/Users/aravind/.opencode/bin"
 export LS_COLORS="$HOME/.cache/wal/colors.sh"
 
 #Starship Config
