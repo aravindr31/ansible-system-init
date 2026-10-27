@@ -26,3 +26,4 @@
     name: terraform
     state: present
   become: true
+
