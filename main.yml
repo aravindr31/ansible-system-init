@@ -28,19 +28,19 @@
   pre_tasks:
   - name: Record start time
     include_tasks: pre_tasks/get_start_time.yml
-    tags: [ always ]
+    tags: [always]
 
   - name: Ensure required folders exist
     include_tasks: pre_tasks/ensure_folders.yml
-    tags: [ always ]
+    tags: [always]
 
   - name: Verify user environment
     include_tasks: pre_tasks/whoami.yml
-    tags: [ always ]
+    tags: [always]
 
   - name: Deploy macOS fonts
     include_tasks: pre_tasks/add_fonts.yml
-    tags: [ fonts ]
+    tags: [fonts]
 
   tasks:
   - name: Package and application management
@@ -81,11 +81,11 @@
   post_tasks:
   - name: Calculate execution time
     include_tasks: post_tasks/get_exec_time.yml
-    tags: [ always ]
+    tags: [always]
 
   - name: Report playbook success
     debug:
       msg: "Playbook completed in {{ execution_time | default('N/A') }} seconds."
     changed_when: true
     notify: ansible_notifier
-    tags: [ always ]
+    tags: [always]

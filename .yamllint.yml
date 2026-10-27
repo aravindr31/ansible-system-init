@@ -9,12 +9,16 @@ rules:
     allowed-values: ["true", "false", "yes", "no"]
   comments:
     min-spaces-from-content: 1
+    level: warning
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
   document-start: disable
   indentation:
     indent-sequences: whatever
+  empty-lines:
+    max: 2
 
 ignore:
   - "vars/vault.yml"
-  - "files/alacritty/colors.yml"
-  - "files/alacritty/colors.ymlbak"
-
+  - "files/"
