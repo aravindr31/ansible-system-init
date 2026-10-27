@@ -1,46 +1,105 @@
+---
+# ==============================================================================
+# Managed Homebrew Packages (Formulae)
+# ==============================================================================
 brew_packages:
-- lsd
-- zsh
-- git
-- htop
-- bat
-- superfile
-- gh
-- btop
-- vim
-- neovim
-- ranger
-- fontconfig
-- lazygit
-- podman
-- openssh
-- terraform
-- spaceship
-- docker-compose
-- fzf
-# - tor
+  - lsd
+  - zsh
+  - git
+  - htop
+  - bat
+  - superfile
+  - gh
+  - btop
+  - vim
+  - neovim
+  - ranger
+  - fontconfig
+  - lazygit
+  - podman
+  - openssh
+  - terraform
+  - spaceship
+  - docker-compose
+  - fzf
+  # - tor
 
+# ==============================================================================
+# Managed Applications (Casks)
+# ==============================================================================
 brew_cask_packages:
-- visual-studio-code
-- transmission
-- vlc
-- whatsapp
-- cloudflare-warp
-- localsend
-- kitty
-- google-chrome
-- firefox
-- veracrypt
-- protonvpn
-- spotify
-- discord
-- telegram-desktop
-- rectangle
-- logi-options-plus
-- obsidian
-- google-drive
-- virtualbox
-- nikitabobko/tap/aerospace
-- raycast
-- wezterm
-- monitorcontrol
+  - visual-studio-code
+  - transmission
+  - vlc
+  - whatsapp
+  - cloudflare-warp
+  - localsend
+  - kitty
+  - google-chrome
+  - firefox
+  - veracrypt
+  - protonvpn
+  - spotify
+  - discord
+  - telegram-desktop
+  - rectangle
+  - logi-options-plus
+  - obsidian
+  - google-drive
+  - virtualbox
+  - nikitabobko/tap/aerospace
+  - raycast
+  - wezterm
+  - monitorcontrol
+
+# ==============================================================================
+# Explicit Uninstallation (Used with --tags uninstall)
+# ==============================================================================
+brew_packages_absent: []
+# - unwanted_package
+
+brew_cask_packages_absent: []
+# - unwanted_cask
+
+# ==============================================================================
+# Declarative Auto-Pruning (Used with --tags prune or brew_prune_unmanaged: true)
+# When enabled: Any top-level package on your system NOT in brew_packages or
+# brew_protected_packages will be automatically uninstalled.
+# ==============================================================================
+brew_prune_unmanaged: false
+
+# Packages to spare from auto-pruning if installed manually on your Mac
+brew_protected_packages:
+  - azure-cli
+  - aztfexport
+  - bun
+  - cmake
+  - curl
+  - ffmpeg
+  - helm
+  - imagemagick
+  - pnpm
+  - python@3.9
+  - ripgrep
+  - starship
+  - yazi
+  - yt-dlp
+  - zoxide
+
+# Casks to spare from auto-pruning if installed manually on your Mac
+brew_protected_casks:
+  - gemini                  # Google Antigravity / Gemini IDE
+  - brave-browser
+  - postman
+  - iina
+  - free-download-manager
+  - miniconda
+  - font-fira-code-nerd-font
+  - font-hack-nerd-font
+  - font-iosevka-nerd-font
+  - font-sf-mono-nerd-font-ligaturized
+
+# ==============================================================================
+# Cleanup Settings
+# ==============================================================================
+run_brew_cleanup: false

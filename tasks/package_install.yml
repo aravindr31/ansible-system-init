@@ -1,24 +1,164 @@
-- block:
-  - name: Check if Homebrew is installed
-    stat:
-      path: /usr/local/bin/brew
-    register: homebrew_check
+---
+# ==============================================================================
+# Homebrew Setup & Verification
+# ==============================================================================
+- name: Check if Homebrew is installed
+  ansible.builtin.command: which brew
+  register: homebrew_check
+  failed_when: false
+  changed_when: false
+  tags:
+    - always
 
-  - name: Install Homebrew if not present
-    shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    when: not homebrew_check.stat.exists
+- name: Install Homebrew if not present
+  ansible.builtin.shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  when: homebrew_check.rc != 0
+  tags:
+    - packages
+    - install
+    - brew
 
-  - name: Update Homebrew
-    homebrew:
-      update_homebrew: yes
+- name: Update Homebrew
+  community.general.homebrew:
+    update_homebrew: true
+  when: update_brew | default(false)
+  tags:
+    - brew:update
 
-  - name: Install Homebrew packages
-    homebrew:
-      name: "{{ brew_packages }}"
-      state: present
+# ==============================================================================
+# Package & Cask Installation (Target: --tags install or --tags packages)
+# ==============================================================================
+- name: Install Homebrew formula packages
+  community.general.homebrew:
+    name: "{{ brew_packages }}"
+    state: present
+  when: brew_packages | default([]) | length > 0
+  tags:
+    - packages
+    - packages:install
+    - install
+    - brew:install
 
-  - name: Install Homebrew Cask applications
-    homebrew_cask:
-      name: "{{ brew_cask_packages }}"
-      state: present
-  become: false
+- name: Install Homebrew Cask applications
+  community.general.homebrew_cask:
+    name: "{{ brew_cask_packages }}"
+    state: present
+  when: brew_cask_packages | default([]) | length > 0
+  tags:
+    - packages
+    - packages:install
+    - install
+    - cask:install
+
+# ==============================================================================
+# Explicit Uninstallation (Target: --tags uninstall)
+# ==============================================================================
+- name: Explicitly uninstall Homebrew formula packages
+  community.general.homebrew:
+    name: "{{ brew_packages_absent }}"
+    state: absent
+  when: brew_packages_absent | default([]) | length > 0
+  tags:
+    - packages:uninstall
+    - uninstall
+    - brew:uninstall
+
+- name: Explicitly uninstall Homebrew Cask applications
+  community.general.homebrew_cask:
+    name: "{{ brew_cask_packages_absent }}"
+    state: absent
+  when: brew_cask_packages_absent | default([]) | length > 0
+  tags:
+    - packages:uninstall
+    - uninstall
+    - cask:uninstall
+
+# ==============================================================================
+# Declarative Auto-Pruning: Remove anything deleted from the desired lists
+# (Target: --tags prune or setting brew_prune_unmanaged: true)
+# ==============================================================================
+- name: Declarative Auto-Pruning of Removed Packages
+  when: brew_prune_unmanaged | default(false) or ('prune' in ansible_run_tags)
+  tags:
+    - prune
+    - brew:prune
+  block:
+    - name: Query installed top-level Homebrew formulae (leaves)
+      ansible.builtin.command: brew leaves -q
+      register: installed_leaves_cmd
+      changed_when: false
+
+    - name: Query installed Homebrew casks
+      ansible.builtin.command: brew list --cask -1
+      register: installed_casks_cmd
+      changed_when: false
+
+    - name: Compute unmanaged formulae to uninstall
+      ansible.builtin.set_fact:
+        unmanaged_formulae: >-
+          {{
+            installed_leaves_cmd.stdout_lines
+            | difference(brew_packages | default([]))
+            | difference(brew_protected_packages | default([]))
+          }}
+
+    - name: Compute unmanaged casks to uninstall
+      ansible.builtin.set_fact:
+        desired_cask_tokens: >-
+          {{
+            brew_cask_packages | default([])
+            | map('split', '/') | map('last') | list
+          }}
+        protected_cask_tokens: >-
+          {{
+            brew_protected_casks | default([])
+            | map('split', '/') | map('last') | list
+          }}
+
+    - name: Calculate unmanaged casks
+      ansible.builtin.set_fact:
+        unmanaged_casks: >-
+          {{
+            installed_casks_cmd.stdout_lines
+            | difference(desired_cask_tokens)
+            | difference(protected_cask_tokens)
+          }}
+
+    - name: Report unmanaged packages identified for removal
+      ansible.builtin.debug:
+        msg:
+          - "Unmanaged Formulae to remove: {{ unmanaged_formulae }}"
+          - "Unmanaged Casks to remove: {{ unmanaged_casks }}"
+
+    - name: Automatically uninstall unmanaged Homebrew formulae
+      community.general.homebrew:
+        name: "{{ unmanaged_formulae }}"
+        state: absent
+      when: unmanaged_formulae | length > 0
+
+    - name: Automatically uninstall unmanaged Homebrew casks
+      community.general.homebrew_cask:
+        name: "{{ unmanaged_casks }}"
+        state: absent
+      when: unmanaged_casks | length > 0
+
+# ==============================================================================
+# Homebrew Cleanup (Target: --tags cleanup or --tags brew:cleanup)
+# ==============================================================================
+- name: Remove unused Homebrew dependencies (brew autoremove)
+  ansible.builtin.command: brew autoremove
+  register: brew_autoremove
+  changed_when: "'Uninstalling' in brew_autoremove.stdout"
+  when: run_brew_cleanup | default(false) or ('cleanup' in ansible_run_tags) or ('brew:cleanup' in ansible_run_tags)
+  tags:
+    - cleanup
+    - brew:cleanup
+
+- name: Cleanup Homebrew cache and old versions (brew cleanup)
+  ansible.builtin.command: brew cleanup --prune=all
+  register: brew_cleanup_output
+  changed_when: "'Removing:' in brew_cleanup_output.stdout or 'Pruned' in brew_cleanup_output.stdout"
+  when: run_brew_cleanup | default(false) or ('cleanup' in ansible_run_tags) or ('brew:cleanup' in ansible_run_tags)
+  tags:
+    - cleanup
+    - brew:cleanup
