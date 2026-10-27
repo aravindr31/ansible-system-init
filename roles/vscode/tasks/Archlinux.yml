@@ -1,0 +1,6 @@
+---
+- name: VSCode | Arch Linux / Manjaro | Install Code
+  pacman:
+    name: code
+    state: present
+  become: true

@@ -1,18 +1,32 @@
-- block:
-  - name: Terraform | {{ ansible_distribution }} | Add the HashiCorp GPG key.
-    apt_key:
-      url: https://apt.releases.hashicorp.com/gpg
-      keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
-      state: present
-
-  - name: Terraform | {{ ansible_distribution }} | Add the official HashiCorp Linux repository
-    apt_repository:
-      repo: "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
-      state: present
-
-  - name: Terraform | {{ ansible_distribution }} | Install Terraform"
-    apt:
-      name: terraform
-      state: present
+---
+- name: Terraform | Install dependency for apt keyring
+  apt:
+    name:
+      - gnupg
+      - software-properties-common
+      - curl
+    state: present
   become: true
 
+- name: Terraform | Add HashiCorp GPG key
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    state: present
+  become: true
+
+- name: Terraform | Add official HashiCorp Linux repository
+  apt_repository:
+    repo: >-
+      deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg]
+      https://apt.releases.hashicorp.com
+      {{ ansible_distribution_release if ansible_distribution in ['Ubuntu', 'Debian'] else (ansible_lsb.codename | default('jammy')) }}
+      main
+    state: present
+  become: true
+
+- name: Terraform | Install Terraform via APT
+  apt:
+    name: terraform
+    state: present
+  become: true

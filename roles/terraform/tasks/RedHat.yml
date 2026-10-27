@@ -1,0 +1,28 @@
+---
+- name: Terraform | Add HashiCorp repository for RedHat / Fedora
+  yum_repository:
+    name: hashicorp
+    description: "HashiCorp Stable - $basearch"
+    baseurl: "https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable"
+    gpgkey: "https://rpm.releases.hashicorp.com/gpg"
+    gpgcheck: true
+    enabled: true
+  become: true
+  when: ansible_distribution != 'Fedora'
+
+- name: Terraform | Add HashiCorp repository for Fedora
+  yum_repository:
+    name: hashicorp
+    description: "HashiCorp Stable - Fedora"
+    baseurl: "https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable"
+    gpgkey: "https://rpm.releases.hashicorp.com/gpg"
+    gpgcheck: true
+    enabled: true
+  become: true
+  when: ansible_distribution == 'Fedora'
+
+- name: Terraform | Install Terraform via DNF / YUM
+  package:
+    name: terraform
+    state: present
+  become: true
