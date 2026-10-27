@@ -1,89 +1,92 @@
-- name: "System Config"
+---
+- name: "Ansible Linux System Init"
   hosts: localhost
   connection: local
   become: false
-  
+  gather_facts: true
+  gather_subset:
+    - '!all'
+    - 'min'
+    - 'env'
+
+  collections:
+    - ansible.builtin
+    - community.general
+
   vars_files:
-  - vars/main.yml
-  - vars/packages.yml
+    - vars/main.yml
+    - vars/packages.yml
+    - vars/vault.yml
 
   handlers:
-  - name: import handlers
-    import_tasks:
-      file: "{{playbook_dir}}/handlers/notify.yml"
+    - name: Import handlers
+      import_tasks: handlers/notify.yml
 
   pre_tasks:
-  - include_tasks:
-      file: "{{item}}"
-    loop:
-    - pre_tasks/ensure_folders.yml # checks and create nessecary folders before main task run
-    - pre_tasks/whoami.yml # check for current user if default user is empty or not defined
-    - pre_tasks/wsl_checks.yml # checks if the is running wsl or not
-    - pre_tasks/add_fonts.yml #checks and imports custom fonts
+    - name: Ensure required folders exist
+      include_tasks: pre_tasks/ensure_folders.yml
+      tags: [always]
 
-  # roles from ansible-galaxy
-  roles:
-  - role: geerlingguy.docker
-    become: true
-    # ignore_errors: true
+    - name: Verify user environment
+      include_tasks: pre_tasks/whoami.yml
+      tags: [always]
+
+    - name: Check for WSL environment
+      include_tasks: pre_tasks/wsl_checks.yml
+      tags: [always]
+
+    - name: Deploy Linux user fonts
+      include_tasks: pre_tasks/add_fonts.yml
+      tags: [fonts]
 
   tasks:
-  - block:
-    - name: package_install
+    - name: Linux system package management
       import_tasks: tasks/package_install.yml
-      ignore_errors: true
-      become: true
-
-      ## Uncomment the below task if the old dotfiles repo eed to be cloned
-
-      # - name: pull config repo
-      #   git:
-      #     repo: "{{ dotfile_git_repo }}"
-      #     dest: "{{ home_folder }}/repos/dotfiles_old/"
-      #     recursive: false
-      #     version: master
-
-
-    - name: Set roles
-      set_fact:
-        run_roles: "{{ default_roles | difference(exclude_roles | default([])) }}"
       tags:
-      - always
+        - packages
+        - install
+        - uninstall
+        - cleanup
 
-    - name: Display roles
-      debug:
-        var: run_roles
+    - name: Configure roles to run
+      block:
+        - name: Determine active roles
+          set_fact:
+            run_roles: "{{ default_roles | difference(exclude_roles | default([])) }}"
+
+        - name: Display roles to be applied
+          debug:
+            var: run_roles
+
+        - name: Apply configured roles
+          include_role:
+            name: "{{ item }}"
+            apply:
+              tags:
+                - "{{ item }}"
+                - roles
+          loop: "{{ run_roles }}"
+          loop_control:
+            label: "{{ item }}"
       tags:
-      - always
+        - roles
+        - dotfiles
+        - config
 
-    - name: Apply Roles
-      include_role:
-        name: "{{item}}"
-        apply:
-          tags:
-          - "{{item}}"
-      with_items: "{{run_roles}}"
-      tags:
-      - always
-
-    - name: source new config file
+    - name: Source updated zshrc
       shell: |
-        source {{ansible_user_dir}}/.zshrc
+        source {{ ansible_user_dir }}/.zshrc
+      args:
+        executable: /bin/zsh
+      failed_when: false
       tags:
-      - always
+        - zsh
+        - dotfiles
 
-    always:
-    - name: playbook_failed
+  post_tasks:
+    - name: Report playbook success
       debug:
-        msg: "playbook failed. - {{ansible_failed['msg']}}"
-      when: ansible_failed is defined
-      notify:
-      - ansible_notiffier
-
-    - name: playbook_succes
-      debug:
-        msg: "playbook success"
+        msg: "Playbook completed successfully."
       changed_when: true
       notify: ansible_notifier
-      when: ansible_failed is not defined
-
+      tags: [always]
